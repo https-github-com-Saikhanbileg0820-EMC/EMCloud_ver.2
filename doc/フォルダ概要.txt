@@ -1,0 +1,180 @@
+・フォルダ構成（のちkintoneプラグインやマイページ等も管理する予定→更新時にはnode_modulesを外した状態のコピーを作成し、"tree"コマンドを実行しコピペしてください）
+
+└─src
+    └─kintone
+        └─app
+            ├─テンプレートファイル
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─基本情報
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─奉行項目変換
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─手続管理
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─扶養控除
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─採用管理
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─支給実績管理
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─支給控除管理
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─環境マスタ
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─社員情報
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─給与管理
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─通勤管理
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─連携情報マスタ
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            ├─雇用手続
+            │  ├─dist
+            │  │  ├─dev
+            │  │  └─prd
+            │  └─src
+            │      ├─css
+            │      └─js
+            │          └─module
+            └─雇用管理
+                ├─dist
+                │  ├─dev
+                │  └─prd
+                └─src
+                    ├─css
+                    └─js
+                        └─module
+
+
+・各フォルダの説明
+└─src…ソース管理
+    └─kintone…kintone関連のソース管理
+        └─app…kintoneアプリのソース管理
+            └─各アプリ名…アプリ単位でのソース管理
+                ├─dist…バンドル済みソース管理
+                │  ├─dev…開発用ファイルフォルダ
+                │  └─prd…本番用ファイルフォルダ
+                └─src…バンドル前ソース管理 ☆
+                    ├─css…cssソース管理
+                    └─js…jsソース管理（index.jsがメインファイル）
+                        └─module…各処理のソース管理
+
+☆以下の階層に作成したコードを配置し、バンドルします
+
+
+・クローン時に実行する動作
+EMCloud_ver.2直下のsrcフォルダに移動し以下のコマンドを実行してください
+"npm install"
+package.jsonに記述されているパッケージのインストールが実行されています
+（webpackの利用に不可欠なので初回時は必ず行って下さい）
+
+
+・index.jsの作成方法
+共通で動かしたい処理を即時関数内に書いてください
+moduleに配置してあるファイルは import "./module/ファイル名" で指定し実行させてください
+例）支給控除管理の例
+	import '../css/style.css';
+	import './module/force.js';
+	import './module/config.js';
+	import './module/common.js';
+	import './module/payrollExemptionManagement_new.js';
+	import './module/yubinkensaku.js';
+
+	(function () {
+	    //ライセンスキーチェック
+	    EMCloud.modules.licenseCheck('app', 'EMCpaymentDeduction', true);
+	})();
+
+
+・バンドルの方法
+[各アプリフォルダからの実行の場合]
+①バンドルを行いたいフォルダに移動 (cdコマンドを利用)
+②"npm run dev" で開発用ファイル、 "npm run prd" で本番用ファイルを生成
+[kintoneフォルダからの実行]
+①kintoneフォルダに移動（cdコマンドを利用）
+②"npm run dev-対象のアプリ名" で開発用ファイル、"npm run prd-アプリ名" で本番用ファイルを生成
+
+
+・ライブラリの使用方法
+ライブラリはnpmでインストールして利用してください
+EMCloud_ver.2直下のsrcフォルダに移動しnode_modulesにインストールする形をとってください
+"npm i インストールしたいライブラリ"

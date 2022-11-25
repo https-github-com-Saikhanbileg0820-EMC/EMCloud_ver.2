@@ -1,0 +1,13 @@
+{
+    "name": "template_file",
+    "version": "1.0.0",
+    "description": "",
+    "main": "webpack.config.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "cd ../../../ && npm run webpack -- --config %INIT_CWD%/webpack.config.js --env mode=development --env name=EMCtemplateFile",
+        "prd": "cd ../../../ && npm run webpack -- --config %INIT_CWD%/webpack.config.js --env mode=production --env name=EMCtemplateFile"
+    },
+    "author": "",
+    "license": "ISC"
+}

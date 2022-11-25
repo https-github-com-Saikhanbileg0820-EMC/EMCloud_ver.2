@@ -1,0 +1,13 @@
+{
+    "name": "achievement",
+    "version": "1.0.0",
+    "description": "",
+    "main": "webpack.config.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "cd ../../../ && npm run webpack -- --config %INIT_CWD%/webpack.config.js --env mode=development --env name=EMCachievement",
+        "prd": "cd ../../../ && npm run webpack -- --config %INIT_CWD%/webpack.config.js --env mode=production --env name=EMCachievement"
+    },
+    "author": "",
+    "license": "ISC"
+}

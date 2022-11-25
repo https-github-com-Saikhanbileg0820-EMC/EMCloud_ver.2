@@ -1,0 +1,13 @@
+body {
+  background-color: #ddd;
+  color: blue;
+  margin: auto;
+  line-height: 0px;
+}
+p {
+  font-size: 16px;
+}
+
+.test-image {
+  background:url('../img/EMクラウドロゴ.png');
+}
