@@ -1,0 +1,41 @@
+{
+    "type":"APP",
+    "manifest_version": 1,
+    "version": "1.0",
+    "name": {
+        "ja": "タスク管理プラグイン",
+        "en": "plugin"
+     },
+     "description": {
+        "ja": "タスクを設定し、アプリに設定されているステータスに紐づけます",
+        "en": "This is plugin."
+     },
+     "icon": "image/タスク管理.png",
+     "homepage_url": {
+         "ja": "https://www.system-renovate.co.jp/",
+         "en": "https://www.system-renovate.co.jp/"
+     },
+     "desktop": {
+        "css":[
+            "css/main.css"
+        ],
+        "js": [
+            "js/jquery-3.6.0.min.js",
+            "js/sweetalert2.all.min.js",
+            "js/main/taskManagement.js"
+        ]
+    },
+     "config":{
+         "html":"html/config.html",
+         "css":[
+             "css/config.css",
+             "css/kintone-style.css"
+         ],
+         "js": [
+            "js/jquery-3.6.0.min.js",
+            "js/sweetalert2.all.min.js",
+            "js/kuc.min.js",
+            "js/config/taskManagement_config.js"
+        ]
+     }
+}

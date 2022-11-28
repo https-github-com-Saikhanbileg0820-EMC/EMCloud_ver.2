@@ -1,0 +1,320 @@
+<div class="block" id="migrate_settings">
+    <div class="kintoneplugin-label">設定移行</div>
+    <button id="export_settings" name="export_settings" class="standard_cancel" style="margin-left: 0">設定EXPORT</button>
+    <input id="fake_import_settings" style="display: none" readonly="true" />
+    <label class="standard_cancel" style="padding: 13px 16px 0">設定IMPORT<input id="import_settings" style="display: none" type="file" /></label>
+</div>
+
+<div class="block">
+    <label for="plugin_use"><input type="checkbox" id="plugin_use" name="plugin_use" />&nbsp;プラグイン有効</label>
+</div>
+<div class="block">
+    <label for="checkStatusHold"><input type="checkbox" id="checkStatusHold" name="checkStatusHold" />&nbsp;レコード詳細画面と編集画面の切り替え時に、出力ボックスのチェック状態を保持する </label>
+</div>
+
+<div class="block">
+    <div class="kintoneplugin-label">１.帳票に出力するフィールドを持つアプリとプラグイン実装アプリの、各レコードを関連付けるキー（主キー）フィールドを選択</div>
+    <div class="kintoneplugin-select">
+        <select id="primaryKey_select" name="primaryKey_select" class="standard"></select>
+    </div>
+</div>
+
+<div class="block">
+    <div class="kintoneplugin-label">２.テンプレートファイルの格納場所を選択</div>
+    <div class="kintoneplugin-select">
+        <select id="app_templateFile_select" name="app_templateFile_select" class="standard">
+            <option value="default">アプリを選択してください。</option>
+        </select>
+    </div>
+    <!-- テンプレートファイルアプリのフィールド設定 -->
+    <div class="block">
+        <table id="templateFile_fix" class="standard" style="width: 70%">
+            <thead class="t_head">
+                <tr>
+                    <th style="width: 4em">No</th>
+                    <th style="width: 20%; min-width: 200px">用途</th>
+                    <th style="width: 50%; min-width: 300px">フィールドコード<span class="kintoneplugin-require" style="color: red">*&nbsp;</span></th>
+                    <th class="standard_column_out"></th>
+                </tr>
+            </thead>
+            <tbody id="templateFile_fix_tbody" name="" class="t_row">
+                <tr>
+                    <td name="order" class="standard_first_column">1</td>
+                    <td>帳票名</td>
+                    <td name="report_name" class="">
+                        <div class="kintoneplugin-select-outer" style="display: flex">
+                            <div class="kintoneplugin-select">
+                                <select id="reportName_select" name="reportName_select" class="standard">
+                                    <option value="default">アプリを選択してください。</option>
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td name="order" class="standard_first_column">2</td>
+                    <td>テンプレートファイル</td>
+                    <td name="template_file" class="">
+                        <div class="kintoneplugin-select-outer" style="display: flex">
+                            <div class="kintoneplugin-select">
+                                <select id="tempFile_select" name="tempFile_select" class="standard">
+                                    <option value="default">アプリを選択してください。</option>
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <div><b>2-1.リストに表示するテンプレートを選択</b></div>
+        <button id="btn_templateDisplay" style="background-color: rgb(46, 112, 253); color: white">全テンプレートを表示</button>
+        <div id="template_select" class="multiselect" style="width: 40em">
+            <ul id="template_options"></ul>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="block"> -->
+<!-- <div class="kintoneplugin-label">３.帳票用キー情報が格納されたアプリを選択</div>
+    <div class="kintoneplugin-select">
+        <select id="app_reportKey_select" name="app_reportKey_select" class="standard">
+            <option value="default">アプリを選択してください。</option>
+        </select>
+    </div> -->
+<!-- 帳票用キー情報アプリのフィールド設定 -->
+<!-- <div class="block"> -->
+<!-- <table id="reportKey_fix" class="standard" style="width:70%;">
+            <thead class="t_head">
+                <tr>
+                    <th style="width:4em;">No</th>
+                    <th style="width:20%;min-width:200px;">用途</th>
+                    <th style="width:50%;min-width:300px;">フィールドコード<span class="kintoneplugin-require"
+                            style="color:red;">*&nbsp;</span></th>
+                    <th class="standard_column_out"></th>
+                </tr>
+            </thead>
+            <tbody id="reportKey_fix_tbody" name="" class="t_row">
+                <tr>
+                    <td name="order" class="standard_first_column">1</td>
+                    <td>出力分類
+                        <button id="btn_help_1" class="standard_info">?</button>
+                    </td>
+                    <td name="output_class" class="">
+                        <div class="kintoneplugin-select-outer" style="display: flex;">
+                            <div class="kintoneplugin-select">
+                                <select id="outputClass_select" name="outputClass_select" class="standard">
+                                    <option value="default">アプリを選択してください。</option>
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td name="order" class="standard_first_column">2</td>
+                    <td>アプリ名</td>
+                    <td name="app_name" class="">
+                        <div class="kintoneplugin-select-outer" style="display: flex;">
+                            <div class="kintoneplugin-select">
+                                <select id="appName_select" name="appName_select" class="standard">
+                                    <option value="default">アプリを選択してください。</option>
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td name="order" class="standard_first_column">3</td>
+                    <td>kintoneフィールドコード</td>
+                    <td name="field_code" class="">
+                        <div class="kintoneplugin-select-outer" style="display: flex;">
+                            <div class="kintoneplugin-select">
+                                <select id="fieldCode_select" name="fieldCode_select" class="standard">
+                                    <option value="default">アプリを選択してください。</option>
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td name="order" class="standard_first_column">4</td>
+                    <td>外部開放用フィールド名</td>
+                    <td name="outside_field_name" class="">
+                        <div class="kintoneplugin-select-outer" style="display: flex;">
+                            <div class="kintoneplugin-select">
+                                <select id="openFieldName_select" name="openFieldName_select" class="standard">
+                                    <option value="default">アプリを選択してください。</option>
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table> -->
+<!-- <button id="open_appId_config" name="open_appId_config" class="standard_mini green">関連キー設定</button>
+        <span class="kintoneplugin-require" style="color:red;">*&nbsp;</span>
+    </div>
+</div> -->
+
+<!-- 帳票出力値を持つアプリのID設定子画面 -->
+<div id="dialog1">
+    <div class="kintoneplugin-label">
+        <!--style="padding:2%; display:block; font-size: 1.2em;"-->
+        ３.帳票出力値を持つアプリのIDを設定して下さい。
+    </div>
+
+    <div id="table_wrapper" class="table_wrapper">
+        <table id="appId_fix" class="standard" style="width: 100%">
+            <thead class="t_head">
+                <tr>
+                    <th style="width: 4em">No</th>
+                    <th style="width: 5%">アプリ選択</th>
+                    <!-- ここがスペース内アプリ一覧のドロップダウンになる想定 -->
+                    <th style="width: 20%">フィールド取得</th>
+                    <!-- <th style="width:30%;">アプリ名</th> //いらない想定 -->
+                    <th style="width: 20%">関連キーフィールド</th>
+                    <th colspan="2" style="width: 20%">抽出条件<button id="btn_help_2" class="standard_info">?</button></th>
+                    <th class="standard_column_out"></th>
+                </tr>
+            </thead>
+            <tbody id="appId_fix_tbody" class="t_row">
+                <tr>
+                    <!--ひな形行-->
+                    <td name="order" class="standard_first_column">1</td>
+                    <td class="td_key_appId">
+                        <select class="input_key_appId">
+                            <option value="default">選択してください。</option>
+                        </select>
+                        <!-- <input type="text" class="input_key_appId"> ここがスペース内アプリ一覧のドロップダウンになる想定 -->
+                    </td>
+                    <td class="td_key_fieldGet">
+                        <span class="btn_fieldGet">取得</span>
+                    </td>
+                    <!-- <td class="td_key_appName"></td> いらない想定-->
+                    <td class="selectFields">
+                        <div class="kintoneplugin-select">
+                            <select name="apps_primaryKey_select" class="standard apps_primaryKey_select">
+                                <option value="default">選択してください。</option>
+                                <!-- 2022-10-11 改修 -->
+                            </select>
+                        </div>
+                    </td>
+                    <td class="td_symbol"></td>
+                    <td class="td_conditions">
+                        <input type="text" class="input_conditions" />
+                    </td>
+                    <td class="td_appId hidden">
+                        <input type="text" class="inputAppId" />
+                    </td>
+                    <td class="standard_column_out">
+                        <button class="childScreenAdd" title="Add row">+</button>
+                        <button class="childScreenDelete" title="Delete this row">-</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="id_footer">
+        <!-- 2022-10-17 追記 -->
+        <span class="menu_closebtn" id="id_closebtn">クリア</span>
+        <!-- <span class="config_runbtn" id="id_savebtn">保存</span><span class="menu_closebtn" id="id_closebtn">破棄</span><span class="manu_cancelbtn" id="id_cancelbtn">キャンセル</span> -->
+    </div>
+</div>
+
+<div class="block">
+    <div class="kintoneplugin-label">４.帳票出力メニューの設定</div>
+    <div class="block">
+        <table id="t_menuConfig" class="standard" style="width: 90%">
+            <thead class="t_head">
+                <tr>
+                    <th style="width: 4em">No</th>
+                    <th style="width: 20%; min-width: 200px">メニュー表示スペース</th>
+                    <th style="width: 50%; min-width: 300px">メニュータイトル<button id="btn_help_4" class="standard_info">?</button></th>
+                    <th style="width: 50%; min-width: 150px">帳票出力ボタン</th>
+                    <th style="width: 50%; min-width: 300px">チェック状態保存フィールド<span class="kintoneplugin-require" style="color: red">*&nbsp;</span> <button id="btn_help_3" class="standard_info">?</button></th>
+                    <th class="standard_column_out"></th>
+                </tr>
+            </thead>
+            <tbody id="tbody_menuConfig" name="" class="t_row">
+                <tr>
+                    <td name="order" class="standard_first_column">1</td>
+                    <td class="td_spaceId">
+                        <div class="kintoneplugin-select-outer" style="display: flex">
+                            <div class="kintoneplugin-select">
+                                <select class="spaceId_select standard"></select>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="text" class="input_menuTitle" style="width: 90%; text-align: center" />
+                    </td>
+                    <td class="td_exportDispFlg" style="vertical-align: top; text-align: center">
+                        <input type="radio" name="radio_exportBtn_dispFlg_1" class="radio_exportBtn_dispFlg" value="true" checked />表示 <input type="radio" name="radio_exportBtn_dispFlg_1" class="radio_exportBtn_dispFlg" value="false" />非表示
+                    </td>
+                    <td class="td_saveFieldCode">
+                        <div class="kintoneplugin-select-outer" style="display: flex">
+                            <div class="kintoneplugin-select">
+                                <select class="saveFieldCode_select standard"></select>
+                            </div>
+                        </div>
+                    </td>
+                    <!--行追加/削除ボタン-->
+                    <td class="standard_column_out">
+                        <button class="standard_add_row" title="Add row">+</button>
+                        <button class="standard_delete_row hidden" title="Delete this row">-</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="indexSelect">
+            <!-- <span class="kintoneplugin-require" style="color: red">*&nbsp;</span> -->
+            <b>4-1.「帳票出力ボタン」表示する一覧を選択（一覧への表示を行わない場合は、空白もしくは「一覧を選択してください」にして下さい。）</b>
+        </div>
+        <div class="kintoneplugin-select">
+            <select id="selectDisplay" name="ppp" class="ppp">
+                <option value="default">一覧を選択してください。</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- 元の場所 -->
+
+<!-- ?ボタン -->
+<div id="help_1" class="hidden" title="「出力分類」について">
+    <p>
+        出力する値の分類項目です。<br />
+        以下項目を有したドロップダウンフィールドを選択してください。<br />
+        フィールド<br />
+        （アプリのフィールドを示すフィールド名）<br />
+        メタ情報<br />
+        （レコードIDもしくはリビジョン）<br />
+        <br />
+    </p>
+</div>
+<div id="help_2" class="hidden" title="「抽出条件」について">
+    <p>
+        レコードの抽出条件を設定できます。<br />
+        ＜注意事項＞<br />
+        ・抽出条件は取得レコードが1件となるものを設定して下さい。<br />
+        ・条件が未設定の場合、「1で設定されたフィールド＝関連キーフィールド」レコードが抽出されます。<br />
+    </p>
+</div>
+<div id="help_3" class="hidden" title="出力チェックボックスのチェック状態について">
+    <p>
+        帳票出力メニューの出力チェックボックスのチェック状態を保存しておくフィールドを選択します（文字列（1行）フィールドのみ）。<br />
+        チェック状態は、以下操作時に保存されます。<br />
+        ・出力ボタンを表示する場合・・・出力ボタンを押下 ＋ レコードの保存ボタンを押下<br />
+        ・出力ボタンを非表示にする場合・・・レコードの保存ボタンを押下<br />
+    </p>
+</div>
+<div id="help_4" class="hidden" title="">
+    <p>メニュータイトルが未入力の場合、デフォルトのタイトル（帳票一覧）が表示されます。<br /></p>
+</div>
+
+<div class="block">
+    <button name="save" class="standard_ok">&nbsp;&nbsp;&nbsp;&nbsp;保存&nbsp;&nbsp;&nbsp;&nbsp;</button>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+    <button name="cancel" class="standard_cancel">&nbsp;&nbsp;キャンセル&nbsp;&nbsp;</button>
+</div>

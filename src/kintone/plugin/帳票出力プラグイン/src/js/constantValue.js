@@ -1,0 +1,16 @@
+const PRODUCT_CODE = 'EMCP07';
+const arr_reportSymbol = [',', '!', '/', '{', '}', '.', '#', '&'];
+const SYMBOL_ENCIRCLE = '"';
+const SYMBOL_SEPARATION = ',';
+const SYMBOL_ROW_INDEX = '!';
+const SYMBOL_CALENDAR = '/';
+const SYMBOL_IF_START = '{';
+const SYMBOL_IF_END = '}';
+const SYMBOL_IF_SEPARATION = '.';
+const SYMBOL_INMULTIPLE = '|';
+const SYMBOL_JOIN = '&';
+const SYMBOL_FIXED = '#';
+const SYMBOL_DATE = '帳票出力:日付';
+const SYMBOL_LIST = '帳票出力:帳票リスト';
+const SYMBOL_SPLIT = ':';
+// const SYMBOL_FIELD = [",", "/", "#", "&"];

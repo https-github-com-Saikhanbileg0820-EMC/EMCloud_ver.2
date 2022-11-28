@@ -1,0 +1,59 @@
+{
+    "manifest_version": 1,
+    "version": "3",
+    "type": "APP",
+    "name": {
+        "ja": "EMクラウド_帳票出力プラグイン",
+        "en": "EMCloud_Report output"
+    },
+    "description": {
+        "ja": "帳票を出力します",
+        "en": "Report output(Excel)"
+    },
+    "icon": "image/icon.png",
+    "homepage_url": {
+        "ja": "https://www.emxas.co.jp",
+        "en": "https://www.emxas.co.jp"
+    },
+    "desktop": {
+        "js": [
+            "js/LICENSE.js",
+            "https://js.cybozu.com/jquery/3.2.1/jquery.min.js",
+            "https://js.cybozu.com/spinjs/2.3.2/spin.min.js",
+            "https://js.cybozu.com/kintone-rest-api-client/1.7.1/KintoneRestAPIClient.min.js",
+            "https://js.cybozu.com/jszip/v3.7.1/jszip.min.js",
+            "js/aes.js",
+            "js/pbkdf2.js",
+            "js/mode-ecb-min.js",
+            "js/constantValue.js",
+            "js/const_message.js",
+            "js/EMCloud_licenseChecker.js",
+            "js/FileSaver.min.js",
+            "js/xlsx-populate.min.js",
+            "js/xlsx-populate-no-encryption.min.js",
+            "js/moment.js",
+            "js/spinner.js",
+            "js/jquery.kintoneThenable.js",
+            "js/emxas_logmanager.js",
+            "js/excelReport_output.js"
+        ],
+        "css": ["css/51-modern-default.css", "css/kintone_dialog.css"]
+    },
+    "config": {
+        "html": "html/excelReport_output_config.html",
+        "js": [
+            "js/LICENSE.js",
+            "https://js.cybozu.com/jquery/3.2.1/jquery.min.js",
+            "https://js.cybozu.com/jqueryui/1.12.0/jquery-ui.min.js",
+            "https://js.cybozu.com/encodingjs/1.0.29/encoding.min.js",
+            "https://js.cybozu.com/spinjs/2.3.2/spin.min.js",
+            "https://js.cybozu.com/kintone-rest-api-client/1.7.1/KintoneRestAPIClient.min.js",
+            "js/constantValue.js",
+            "js/jquery.kintoneThenable.js",
+            "js/spinner.js",
+            "js/emxas_logmanager.js",
+            "js/excelReport_output_config.js"
+        ],
+        "css": ["https://js.cybozu.com/jqueryui/1.12.1/themes/smoothness/jquery-ui.css", "css/51-modern-default.css", "css/kintone_standard.css", "css/kintone_dialog.css"]
+    }
+}

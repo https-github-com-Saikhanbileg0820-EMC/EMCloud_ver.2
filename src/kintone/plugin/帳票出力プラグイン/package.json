@@ -1,0 +1,13 @@
+{
+    "name": "excel_report_output_plugin",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "pack": "bash package.sh UPDATE",
+        "newPack": "bash package.sh NEW"
+    },
+    "author": "",
+    "license": "ISC"
+}

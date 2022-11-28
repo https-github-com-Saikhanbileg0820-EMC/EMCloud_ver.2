@@ -1,0 +1,50 @@
+<div class='saveCancel'>
+    <button class="kintoneplugin-button-dialog-ok" id='save'>保存</button>
+    <button class='kintoneplugin-button-dialog-cancel' id="cancel">キャンセル</button>
+</div>
+
+<div class="main_content">
+    <div id="fieldSelect">
+        <label id="myselfFieldSelect_label">１.プロセスを分岐させるフィールドを選択（ドロップダウン）</label>
+        <div id="selectClear">
+            <select id="myselfFieldSelect">
+                <option value="0">フィールドを選択してください</option>
+            </select>
+            <button id="clearBtn">設定クリア</button>
+        </div>
+    </div>
+    <div class="setting_record">
+        <div class="setting_number">--</div>
+        <div class="setting_details">
+            <div class="setting_columns">
+                <div class="setting_column first_column">
+                    
+                    <div class="first_status">
+                        <label class="first_status_label">初期ステータス：</label>
+                        <label class="first_status_text">未処理</label>
+                    </div>
+                </div>
+                <div id="column_1_1" class="setting_column">
+                    <!-- <button class="setting_column_deleteBtn">✕</button> -->
+                    <div class="setting_column_inner">
+                        <label class="arrow_label">＞＞＞</label>
+                        <select class="setting_status">
+                            <option value="0">選択してください</option>
+                        </select>
+                    </div>
+                    <label class="must_label">必須項目設定</label>
+                </div>
+            </div>
+            <button class="setting_column_addBtn">
+                <label class="column_addBtn_label">追加</label>
+                <div class="column_addBtn_elm">+</div>
+            </button>
+        </div>
+        <div class="record_btns_column">
+            <div class="record_btns">
+                <button class="record_addBtn">+</button>
+                <button class="record_delBtn">-</button>
+            </div>
+        </div>
+    </div>
+</div>

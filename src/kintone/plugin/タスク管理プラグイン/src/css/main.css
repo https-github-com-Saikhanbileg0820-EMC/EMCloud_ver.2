@@ -1,0 +1,100 @@
+#taskManagement_statusFlow {
+  height: 170px;
+  width: 100%;
+  background-color: #fff;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+#statusFlow {
+  height: 170px;
+  width: 100%;
+  display: flex;
+  /* padding-left: 40px; */
+  /* padding-right: 40px; */
+}
+
+.statusElement {
+  height: 170px;
+  width: 200px;
+}
+/* 奇数 */
+.statusElement_odd {
+  background-color: #fff;
+  color: #242476;
+}
+/* 偶数 */
+.statusElement_even {
+  background-color: rgb(206, 215, 255);
+  color: #242476;
+}
+
+.statusLabel {
+  height: 35px;
+  width: 200px;
+  display: block;
+  line-height: 35px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 30px;
+  overflow: hidden;
+}
+
+.statusFlowElement {
+  height: 75px;
+  width: 200px;
+  display: flex;
+  /* background-color: burlywood; */
+}
+
+.statusPoint {
+  height: 35px;
+  width: 35px;
+  border: 3px solid #242476;
+  border-radius: 30px;
+  margin-top: 5px;
+}
+/* 奇数 */
+.statusPoint_odd {
+}
+/* 偶数 */
+.statusPoint_even {
+}
+
+.line_before {
+  height: 50px;
+  width: 79.5px;
+  /* background-color: beige; */
+}
+
+.line_after {
+  height: 50px;
+  width: 79.5px;
+  /* background-color: beige; */
+}
+
+.currentStatus {
+  height: 25px;
+  width: 25px;
+  background-color: #d4d7d7;
+  border-radius: 20px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+.Current {
+  background-color: #3498db;
+}
+
+#displayBtn {
+  margin-top: 3px;
+  height: 38px;
+  width: 40px;
+  background-color: #f7f9fa;
+  text-align: center;
+  line-height: 40px;
+  border: 1px solid #e8e8e8;
+  color: #3498db;
+  cursor: pointer;
+}

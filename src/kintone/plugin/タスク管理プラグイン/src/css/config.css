@@ -1,0 +1,250 @@
+.main_content {
+  height: auto;
+  width: 1075px;
+  padding-top: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 50px;
+}
+
+.hidden {
+  display: none;
+}
+
+.hissu {
+  color: red;
+}
+
+.setting_record {
+  height: 250px;
+  width: 1050px;
+  max-width: 1050px;
+  /* overflow-x: scroll;
+    overflow-y: hidden; */
+  /* background-color: antiquewhite; */
+  display: flex;
+  /* border: 1px solid #d5d7d9; */
+}
+
+.setting_number {
+  height: 250px;
+  width: 150px;
+  background-color: #3498db;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  line-height: 250px;
+  border-top: 1px solid #d5d7d9;
+}
+
+.setting_column {
+  height: 250px;
+  width: 200px;
+  padding-left: 25px;
+  padding-right: 25px;
+  background-color: #fff;
+  /* line-height: 185px; */
+  border-right: 1px solid #d5d7d9;
+  /* display: flex; */
+}
+
+.setting_status {
+  height: 40px;
+  width: 150px;
+  color: #3498db;
+  border: 1px solid #d5d7d9;
+}
+
+.first_column {
+  background-color: #f1f1f1;
+}
+
+.first_status {
+  height: 150px;
+  width: 200px;
+  /* background-color: beige; */
+  margin-top: 50px;
+  line-height: 100px;
+}
+
+.first_status_label {
+  width: 140px;
+  height: 50px;
+  display: block;
+}
+
+.first_status_text {
+  width: 140px;
+  height: 50px;
+  display: block;
+  font-weight: bold;
+  color: #3498db;
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+.setting_details {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 250px;
+  width: 820px;
+  max-width: 820px;
+  display: flex;
+  border: 1px solid #d5d7d9;
+}
+
+.setting_column_addBtn {
+  height: 250px;
+  width: 65px;
+  border: none;
+  border-right: 1px solid #d5d7d9;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  color: #3498db;
+  display: none;
+}
+
+.setting_column_addBtn:hover {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.column_addBtn_label {
+  height: 20px;
+  width: 50px;
+  display: block;
+}
+
+.column_addBtn_elm {
+  height: 30px;
+  width: 30px;
+  background-color: #f7f9fa;
+  border: 1px solid #c1c1c1;
+  color: #3498db;
+  border-radius: 50px;
+  text-align: center;
+  line-height: 30px;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.setting_columns {
+  display: flex;
+}
+
+.record_btns_column {
+  height: 250px;
+  width: 100px;
+  /* background-color: aqua; */
+  display: flex;
+}
+
+.record_addBtn {
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  background-color: #3498db;
+  color: #fff;
+  text-align: center;
+  line-height: 20px;
+  margin-left: 20px;
+  border: none;
+  font-size: 11px;
+  cursor: pointer;
+  display: none;
+}
+
+.record_delBtn {
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #3498db;
+  border: 1px solid #c1c1c1;
+  text-align: center;
+  line-height: 20px;
+  margin-left: 20px;
+  display: none;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.record_btns {
+  height: 30px;
+  width: 100px;
+  /* background-color: beige; */
+  margin-top: 95px;
+  line-height: 30px;
+  display: flex;
+}
+
+.arrow_label {
+  color: #3498db;
+  font-weight: bold;
+}
+
+.setting_column_inner {
+  height: 50px;
+  width: 200px;
+  margin-top: 20px;
+}
+
+.setting_column_deleteBtn {
+  height: 25px;
+  width: 25px;
+  border: 1px solid #e1e1e1;
+  background-color: #fff;
+  margin-left: 195px;
+  margin-top: 5px;
+  font-weight: bold;
+  color: #3498db;
+  cursor: pointer;
+}
+
+.setting_column_deleteBtn:hover {
+  background-color: #3498db;
+  color: #fff;
+}
+
+#fieldSelect {
+  height: 100px;
+  width: 500px;
+  /* background-color: beige; */
+  padding: 10px 0px 10px 10px;
+}
+
+#myselfFieldSelect_label {
+  height: 30px;
+  width: 400px;
+  display: block;
+  /* background-color: cadetblue; */
+  line-height: 30px;
+  font-weight: bold;
+}
+
+#myselfFieldSelect {
+  height: 40px;
+  width: 250px;
+  border: 1px solid #f1f1f1;
+  color: #3498db;
+  padding-left: 5px;
+}
+
+#clearBtn {
+  background-color: #ffffff;
+  border: 1px solid #f1f1f1;
+  height: 40px;
+  width: 100px;
+  color: #3498db;
+  cursor: pointer;
+  margin-left: 10px;
+  display: none;
+}
+
+#selectClear {
+  display: flex;
+}
+
+.kuc-multi-choice-1-6-0__group {
+  max-width: 200px;
+}

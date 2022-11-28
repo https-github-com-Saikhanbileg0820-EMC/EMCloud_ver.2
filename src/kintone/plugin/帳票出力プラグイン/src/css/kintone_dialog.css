@@ -1,0 +1,371 @@
+/*:::::::::::::::::
+kintone Dialog CSS
+Copyright © 2020 エムザス株式会社 All rights reserved.
+:::::::::::::::::::*/
+
+/*
+設定画面用
+*/
+.config_runbtn {
+    display: inline-block;
+    background-color: #061283;
+    color: #fff;
+    border-radius: 4px;
+    transition: background-color 0.1s;
+    margin: 3%;
+    padding: 0.5em 1em;
+    width: 15%;
+    cursor: pointer;
+}
+.config_runbtn:hover {
+    transition: 0.2s;
+    box-shadow: 0 5px 8px 0 #aaaaaa;
+    background-color: #1027ff;
+}
+
+/*
+TABLE
+*/
+
+table.standard2 {
+    border-collapse: collapse;
+    table-layout: fixed;
+    display: block;
+    border-right: 1px solid #ccc;
+}
+
+table.standard2 th {
+    height: 26px;
+    width: 102px;
+    padding: 10px 4px 4px 4px;
+}
+
+table.standard2 td {
+    height: 21px;
+    background-color: #fff;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+table.standard2 thead th {
+    background-color: #638c0b;
+    border-color: #638c0b;
+    color: #fff;
+    font-weight: normal;
+    text-align: center;
+    word-break: break-word;
+    position: -webkit-sticky;
+    position: sticky;
+    vertical-align: top;
+    top: 0;
+    z-index: 3;
+}
+
+table.standard2 thead th.sticky0 {
+    background-color: #486608;
+    font-weight: bold;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 4;
+}
+
+table.standard2 thead th.sticky1 {
+    background-color: #486608;
+    font-weight: bold;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    left: 47px;
+    z-index: 5;
+}
+
+table.standard2 thead th.sticky2 {
+    background-color: #486608;
+    font-weight: bold;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    left: 157px;
+    z-index: 6;
+}
+
+table.standard2 tbody th {
+    background-color: #f3f3f3;
+    color: #222;
+    border-bottom: 1px solid #ccc;
+    word-break: break-word;
+    font-weight: normal;
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+}
+
+table.standard2 tbody th.sticky0 {
+    left: 0;
+    z-index: 1;
+}
+
+table.standard2 tbody th.sticky1 {
+    left: 47px;
+    z-index: 2;
+}
+
+table.standard2 tbody th.sticky2 {
+    left: 157px;
+    z-index: 3;
+}
+
+table.standard2 tr th:first-child {
+    width: 40px;
+}
+
+table.standard2 tbody tr th:first-child {
+    width: 20px;
+    padding-right: 20px;
+    text-align: right;
+}
+
+div.inline-radio label {
+    position: relative;
+    height: 100%;
+    flex: 1;
+}
+
+div.inline-radio input[type='radio'] {
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+div.inline-radio input[type='radio']:checked + span {
+    background-color: green;
+    font-weight: 500;
+    color: #fff;
+}
+
+div.inline-radio input[value='hidden']:checked + span {
+    background-color: #ccc;
+    font-weight: 500;
+    color: #666;
+}
+
+div.inline-radio label span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #b6b6b6;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    border-right: 1px solid #b6b6b6;
+    font-size: 12px;
+}
+
+div.inline-radio {
+    display: flex;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid #b6b6b6;
+    width: 100px;
+    height: 24px;
+    margin: auto;
+}
+
+/*
+DIV
+*/
+
+/* モーダル コンテンツエリア */
+#dialog_entire {
+    /*スクロール禁止*/
+    overflow: hidden;
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    /*opacity:0.7;*/
+    background: rgba(97, 97, 97, 0.7);
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+}
+#dialog1 {
+    /* display: none; */
+    /* margin: -200px 0 0 -450px; 縦横半分をネガティブマージンでずらす */
+    /* position: absolute; body要素に対して絶対配置 */
+    /* top: 50%; 上端を中央に */
+    /* left: 50%; 左端を中央に */
+    width: 1000px; /*横幅*/
+    height: auto; /*縦幅*/
+    /* background-color: rgb(255, 255, 255); */
+    /* z-index: 1; */
+}
+#id_footer {
+    height: 15%;
+    width: 100%;
+    text-align: end;
+}
+
+.menu_closebtn {
+    display: inline-block;
+    background-color: #bcc5d6;
+    color: rgb(58, 90, 110);
+    border-radius: 4px;
+    transition: background-color 0.1s;
+    margin: 3%;
+    padding: 0.5em 1em;
+    width: 15%;
+    cursor: pointer;
+    text-align: center;
+}
+.menu_closebtn:hover {
+    transition: 0.2s;
+    box-shadow: 0 5px 8px 0 #aaaaaa;
+    background-color: #eff4ff;
+}
+
+.popup {
+    display: none;
+    height: 100vh;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.508);
+    /* opacity: 0.7; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+
+.content {
+    background: #fff;
+    padding: 30px;
+    width: 540px;
+    z-index: 100;
+    /* margin: auto;
+    margin-top: 300px; */
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    -webkit-transform: translateY(-50%) translateX(-50%);
+    position: fixed;
+}
+
+.dialog-buttons {
+    margin-left: 100px;
+    margin-top: 10px;
+}
+
+.menu_parent {
+    border: rgb(0, 114, 180);
+    border-width: 1em;
+}
+.menu_title {
+    margin-left: 5%;
+    font-size: 1.1em;
+    color: #333;
+}
+thead.head_menu {
+    background-color: #d8d8d8;
+    border-color: #d8d8d8;
+    color: #333;
+}
+.td_checkReq {
+    text-align: center;
+}
+.td_checkReq_alreadyOutput {
+    text-align: center;
+}
+.td_No {
+    text-align: center;
+}
+table.table_menu {
+    border: solid 1px #d8d8d8;
+    margin: auto;
+}
+table.table_menu td {
+    background: #f6f6f6;
+}
+table.table_menu tr:nth-child(odd) td {
+    background: #fff;
+}
+table.table_menu td,
+table.table_menu th {
+    padding: 7px;
+}
+
+/*
+共通css解除用
+*/
+.menu_checkBox::before {
+    content: none;
+}
+.menu_checkBox::after {
+    content: none;
+}
+.menu_checkBox_alreadyOutput::before {
+    content: none;
+}
+.menu_checkBox_alreadyOutput::after {
+    content: none;
+}
+
+/*
+OTHERS
+*/
+
+.table_wrapper {
+    /* margin: 20px auto 0 2%; */
+    max-width: 96%;
+    max-height: 86%;
+    /*overflow:scroll;*/
+    border-left: #ccc;
+}
+
+.table_wrapper::-webkit-scrollbar {
+    height: 30px;
+}
+
+.table_wrapper::-webkit-scrollbar-track {
+    background: #dddddd;
+}
+
+.table_wrapper::-webkit-scrollbar-thumb {
+    background: #aaa;
+    cursor: pointer;
+}
+
+.kintoneplugin-select {
+    max-width: none;
+}
+
+/* .hidden {
+    display: none;
+} */
+
+/*
+2022-10-17追記
+*/
+.manu_cancelbtn {
+    display: inline-block;
+    background-color: #898989;
+    color: rgb(255, 255, 255);
+    border-radius: 4px;
+    transition: background-color 0.1s;
+    margin: 3%;
+    padding: 0.5em 1em;
+    width: 15%;
+    cursor: pointer;
+}
+
+.manu_cancelbtn:hover {
+    transition: 0.2s;
+    box-shadow: 0 5px 8px 0 #aaaaaa;
+    background-color: #bcc5d6;
+}

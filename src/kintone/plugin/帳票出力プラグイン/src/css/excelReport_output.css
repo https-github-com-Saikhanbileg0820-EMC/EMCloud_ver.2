@@ -1,0 +1,157 @@
+/**
+帳票出力css
+Copyright © 2020 エムザス株式会社 All rights reserved.
+**/
+@charset "UTF-8";
+/*
+タブプラグイン CSS
+*/
+.tab_wrap{
+    margin:20px 10px 20px 18px;
+}
+.tab_list{
+    margin:0 0 0 0px;
+    padding:0;
+    max-width:1700px;
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-flex-wrap:wrap;
+    -moz-flex-wrap:wrap;
+    -ms-flex-wrap:wrap;
+    flex-wrap:wrap;
+}
+.tab_tab{
+    flex-grow: 1;
+    padding :11px 9px 4px 10px;
+    list-style :none;
+    text-align:center;
+    cursor :pointer;
+    min-height :24px;
+    min-width:50px;
+    margin-right:0px;
+    background-color:#ccc;
+    font-weight:600;
+    font-size: 12px;
+    color: #666;
+    white-space: nowrap;
+    border-top:1px solid #e0e0e0;
+    border-right:1px solid #e0e0e0;
+}
+.tab_tab:last-child{
+    margin-right:0px;
+}
+.tab_tab.active{
+    color:#FFF;
+    font-weight:600;
+}
+.plain.active{
+    background:#3498db;
+    border-top:1px solid #3498db;
+    border-right:1px solid #3498db;
+}
+.red.active{
+    background:#b83d3d;
+    border-top:1px solid #b83d3d;
+    border-right:1px solid #b83d3d;
+}
+.green.active{
+    background:#638c0b;
+    border-top:1px solid #638c0b;
+    border-right:1px solid #638c0b;
+}
+.blue.active{
+    background:#448aca;
+    border-top:1px solid #448aca;
+    border-right:1px solid #448aca;
+}
+.yellow.active{
+    background:#f1c40f;
+    border-top:1px solid #f1c40f;
+    border-right:1px solid #f1c40f;
+}
+.black.active {
+    background:#313131;
+    border-top:1px solid #313131;
+    border-right:1px solid #313131;
+}
+.tab_main{
+    border:1px solid #ccc;/*#3498db*/
+    background:transparent;/*#f6f6f6;*/
+    margin:0 0 0 0px;
+    padding:10px;
+    box-shadow: 1px 1px 2px 2px #ccc;
+}
+.plain.tab_main{
+    border:1px solid #3498db;
+}
+.red.tab_main{
+    border:1px solid #b83d3d;
+}
+.green.tab_main{
+    border:1px solid #638c0b;
+}
+.blue.tab_main{
+    border:1px solid #448aca;
+}
+.yellow.tab_main{
+    border:1px solid #f1c40f;
+}
+.black.tab_main{
+    border:1px solid #313131;
+}
+
+.tab_content{
+    display:none;
+}
+.tab_content.active{
+    display:block;
+}
+.tab_list.is-fixed {
+    position: fixed;
+    z-index:999;
+}
+.tab_list.fixed {
+    position: fixed;
+    top:100px;
+    z-index:999;
+}
+.infoWin{
+    width:44%;
+    padding:3%;
+    border:1px solid #999;
+    background-color:#ffffddf6;
+    border-radius:2px;
+    position:absolute;
+    top:5%;
+    left:25%;
+}
+button.standard {
+    min-width: 80px;
+    max-width: 288px;
+    font-size: 14px;
+    overflow: hidden;
+    height: 40px;
+    margin: 3px 8px 3px 40px;
+    padding:0 16px;
+    vertical-align: middle;
+    display: inline-block;
+    border: 1px solid #e3e7e8;
+    background-color: #f7f9fa;
+    color: #3498db;
+}
+button.standard:hover{
+    background-color: #c8d6dd;
+    box-shadow: none;
+    cursor: pointer;
+}
+/*
+OTHERS
+*/
+.hidden {
+    display:none;
+}
+/*
+.control-label-gaia{
+    background-color:transparent;
+}
+*/
