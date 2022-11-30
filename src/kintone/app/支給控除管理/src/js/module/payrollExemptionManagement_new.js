@@ -45,11 +45,11 @@ import JSZip from 'jszip';
     });
 
     //*============================== フィールド制御処理 ==============================
-    kintone.events.on(['app.record.edit.show','app.record.create.show'], (event) => {
+    kintone.events.on(['app.record.edit.show', 'app.record.create.show'], (event) => {
         const record = event.record;
         // 固定データフィールドを編集不可にする
         EMC.FIELD.DISABLED.forEach((field) => {
-          record[field].disabled = true;
+            record[field].disabled = true;
         });
         //非表示
         EMC.FIELD.HIDDEN.forEach((field) => {
@@ -63,10 +63,10 @@ import JSZip from 'jszip';
         const record = event.record;
         // 固定データフィールドを編集不可にする
         EMC.FIELD.DISABLED.forEach((field) => {
-          record[field].disabled = true;
+            record[field].disabled = true;
         });
-        if('app.record.create.show'===event.type){
-          record["社員番号"].disabled=false
+        if ('app.record.create.show' === event.type) {
+            record['社員番号'].disabled = false;
         }
         record.性別.disabled = true;
         record.雇用区分.disabled = true;
@@ -271,14 +271,14 @@ import JSZip from 'jszip';
 
         // ---------------------------------------------------------------------------
         let clothingFlg = {};
-        for(let subjectRecord of subjectRecords){
-            for(let subject in subjectRecord){
-                if(clothingFlg[subject]){
-                    if(subjectRecord[subject]){
+        for (let subjectRecord of subjectRecords) {
+            for (let subject in subjectRecord) {
+                if (clothingFlg[subject]) {
+                    if (subjectRecord[subject]) {
                         clothingFlg[subject].push(subjectRecord[subject]);
                     }
-                }else{
-                    if(subjectRecord[subject]){
+                } else {
+                    if (subjectRecord[subject]) {
                         clothingFlg[subject] = subjectRecord[subject];
                     }
                 }
@@ -286,8 +286,6 @@ import JSZip from 'jszip';
         }
         console.log(clothingFlg);
         // ---------------------------------------------------------------------------
-
-        
 
         //対象レコード0件の確認
         let stopFlag = true;
@@ -323,7 +321,7 @@ import JSZip from 'jszip';
             location.reload();
         } catch (e) {
             EMC.ERROR(e);
-            console.log("end")
+            console.log('end');
             EMC.SPIN.HIDE();
             return;
         }
@@ -377,7 +375,13 @@ import JSZip from 'jszip';
             eachClosingRecordsList = await Promise.all(promiseAry);
             //対象レコード全件が最初のステータス（出力対象のステータス）か確認→1件でも対象外のものがあったらエラー＆処理中断
             if (!EMC.CSV.CHECK_STATUS(eachClosingRecordsList, await EMC.STATUS.GET_FIRST())) {
-                EMC.ERROR(`承認が完了していないレコードが存在します<br><a href="${EMC.URL}${kintone.app.getId()}/?view=${await EMC.RESTAPI.GET_VIEWID(kintone.app.getId(), EMC.VIEW.unapproved)}" target="_blank">対象レコードを確認する</a>`);
+                const employmentFormat = employmentList
+                    .map((employment) => {
+                        return `"${employment.employment}"`;
+                    })
+                    .join(',');
+                const condition = `ステータス = "申請中" and 雇用区分 in (${employmentFormat})`;
+                EMC.ERROR(`承認が完了していないレコードが存在します<br><a href="${EMC.URL}${kintone.app.getId()}/?query=${encodeURIComponent(condition)}" target="_blank">対象雇用区分の未承認レコードを確認する</a>`);
                 EMC.SPIN.HIDE();
                 return;
             }

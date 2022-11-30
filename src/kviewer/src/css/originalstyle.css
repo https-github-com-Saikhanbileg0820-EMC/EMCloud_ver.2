@@ -1,0 +1,366 @@
+@charset "utf-8";
+.column.center.aligned a {
+    display: none;
+}
+.kv-table-view.kv-records-index-content {
+    opacity: 0;
+}
+main {
+    width: 100%;
+}
+#logout_btn {
+    padding: 12px;
+    background-color: #ffcc00;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #4b4b4b;
+}
+.ui.header {
+    display: none;
+}
+header.el-header {
+    width: 100%;
+    padding: 0;
+    margin-bottom: 30px;
+}
+header.el-header div div {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+header .logo {
+    width: 200px;
+}
+
+#header_area {
+    position: relative;
+    width: 100%;
+    padding: 8px 8px 18px 8px !important;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    border-bottom: 1px solid #efefef;
+}
+#header_area:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 20%;
+    height: 8px;
+    background: #ffcc00;
+}
+#header_area:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    width: 80%;
+    height: 8px;
+    background: #4b4b4b;
+}
+
+#logo {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+#logo img {
+    width: 50px;
+}
+#softname {
+    padding-left: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+button#links {
+    border: none;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background-color: #ffcc00;
+    color: #ffffff;
+    padding: 12px 25px;
+    cursor: pointer;
+}
+
+#btnarea {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 30px auto;
+}
+#catttls {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+#btnlistbox {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0;
+}
+
+#btnlistbox li {
+    width: 170px;
+    list-style: none;
+    padding-left: 0em;
+    margin: 0 12px;
+    line-height: 0em;
+}
+#btnlistbox li a {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #ffcc00;
+    color: #4b4b4b;
+    font-weight: bold;
+    font-size: 1.2rem;
+    -moz-border-radius: 16px;
+    -webkit-border-radius: 16px;
+    border-radius: 16px;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.5em;
+    cursor: pointer;
+    opacity: 1;
+    box-shadow: 0 2px 4px 0 rgb(34 36 38 / 12%), 0 2px 10px 0 rgb(34 36 38 / 15%);
+}
+#btnlistbox li a:hover {
+    opacity: 0.6;
+}
+#btnlistbox li a img {
+    width: 70px;
+    height: 70px;
+    display: block;
+    margin: 0 auto 12px auto;
+}
+.ql-editor ul > li:before {
+    content: '';
+}
+main.kv-main {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.ui.raised.item[data-v-52b53dd0] {
+    padding: 3em;
+}
+
+.kv-element.label {
+    padding: 1em 0 !important;
+}
+
+.kv-element .element-label.kv-element-label {
+    display: block;
+}
+
+.kv-element .kv-element-label p strong {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    border-left: 5px solid #3498db;
+    line-height: 1em;
+    padding: 6px 10px;
+}
+
+.kv-element.single-line-text,
+.kv-element.radio-button,
+.kv-element.number,
+.kv-element.date,
+.kv-element.drop-down,
+.kv-element.multi-line-text {
+    border: 1px solid #efefef;
+    padding: 0 !important;
+    margin-bottom: 10px;
+}
+.kv-element .element-label.kv-element-label {
+    width: 100%;
+    padding: 1em 1.5em;
+    background-color: #efefef;
+}
+.kv-element .kv-text-element,
+.kv-element .kv-datetime-element,
+.kv-element .kv-number-element {
+    width: 100%;
+    min-height: 42px;
+    padding: 1em;
+}
+
+.ui.icon.button.kv-fb-content.circular.teal.large {
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+.kv-element-label p {
+    width: 100%;
+    font-size: 2rem;
+    margin-top: 36px !important;
+    padding: 0 0 0 12px;
+    border-left: 5px solid #ffcc00;
+    font-weight: bold;
+}
+.kv-element.label:last-child {
+    display: none;
+}
+
+#fambox {
+    width: 100%;
+}
+#fambox .famdatabox {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: 0;
+    padding: 0;
+}
+#fambox .famdatabox li {
+    display: inline-block;
+    margin-bottom: 20px;
+    list-style: none;
+    border: 1px solid #efefef;
+}
+#fambox .famdatabox li:first-child {
+    display: block;
+    width: 100%;
+    margin-bottom: 3px;
+    border: none;
+}
+#fambox .famdatabox li .famttl {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+#fambox .famdatabox li .famdataboxttl {
+    width: 100%;
+    text-align: center;
+    padding: 1em 1.5em;
+    background-color: #efefef;
+    font-weight: bold;
+    display: block;
+}
+#fambox .famdatabox li .famdataboxdata {
+    width: 100%;
+    min-height: 42px;
+    padding: 1em;
+    line-height: 1em;
+    white-space: pre-wrap;
+}
+
+#footer {
+    background-color: #555555 !important;
+}
+
+@media screen and (max-width: 480px) {
+    #logo {
+        width: 65%;
+    }
+    .ui.fluid.container {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    .kv-record-detail-content-item .kv-element {
+        width: 100%;
+    }
+    .kv-element.single-line-text,
+    .kv-element.radio-button,
+    .kv-element.number,
+    .kv-element.date,
+    .kv-element.drop-down,
+    .kv-element.multi-line-text {
+        margin-bottom: 0;
+    }
+    .ui.raised.item[data-v-52b53dd0] {
+        padding: 1em;
+    }
+    .kv-element {
+        overflow: auto;
+    }
+    .kv-element-label p {
+        width: 100%;
+        font-size: 1.5rem;
+        margin-top: 20px !important;
+        padding: 0 0 0 12px;
+        border-left: 5px solid #ffcc00;
+        font-weight: bold;
+    }
+    .kv-element::-webkit-scrollbar {
+        /*tableにスクロールバーを追加*/
+        height: 5px;
+    }
+    .kv-element::-webkit-scrollbar-track {
+        /*tableにスクロールバーを追加*/
+        background: #f1f1f1;
+    }
+    .kv-element::-webkit-scrollbar-thumb {
+        /*tableにスクロールバーを追加*/
+        background: #bcbcbc;
+    }
+    .kv-element-has-value {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .kv-element-has-value .kv-element-label {
+        width: 50% !important;
+    }
+    .kv-element-has-value .kv-text-element,
+    .kv-element-has-value .kv-number-element,
+    .kv-element-has-value .kv-datetime-element {
+        width: 50% !important;
+    }
+    #fambox .famdatabox li {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 0;
+    }
+    #fambox .famdatabox li .famdataboxttl {
+        width: 50%;
+    }
+    #fambox .famdatabox li .famdataboxdata {
+        width: 50%;
+    }
+    #fambox .famdatabox:first-child {
+        margin-bottom: 20px;
+    }
+
+    #btnarea {
+        margin: 0 auto;
+    }
+    #btnlistbox li {
+        width: 46%;
+        list-style: none;
+        padding-left: 0em;
+        margin: 0 2%;
+        line-height: 0em;
+    }
+    #btnlistbox li a {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        color: #4b4b4b;
+        font-weight: bold;
+        font-size: 1.1rem;
+        -moz-border-radius: 16px;
+        -webkit-border-radius: 16px;
+        border-radius: 16px;
+        text-align: center;
+        white-space: normal;
+        line-height: 1.5em;
+        cursor: pointer;
+    }
+    #softname {
+        padding-left: 12px;
+        font-size: 1.2rem;
+    }
+}

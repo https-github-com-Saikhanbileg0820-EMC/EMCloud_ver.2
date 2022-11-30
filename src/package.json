@@ -17,8 +17,8 @@
         "prd-基本情報": "webpack --config kintone/app/基本情報/webpack.config.js --env mode=production --env name=EMCbasicInfomation",
         "dev-給与管理": "webpack --config kintone/app/給与管理/webpack.config.js --env mode=development --env name=EMCsalaryManagement",
         "prd-給与管理": "webpack --config kintone/app/給与管理/webpack.config.js --env mode=production --env name=EMCsalaryManagement",
-        "dev-雇用管理": "webpack --config kintone/app/雇用管理/webpack.config.js --env mode=development --env name=EMCemployManagement",
-        "prd-雇用管理": "webpack --config kintone/app/雇用管理/webpack.config.js --env mode=production --env name=EMCemployManagement",
+        "dev-雇用情報": "webpack --config kintone/app/雇用情報/webpack.config.js --env mode=development --env name=EMCemployManagement",
+        "prd-雇用情報": "webpack --config kintone/app/雇用情報/webpack.config.js --env mode=production --env name=EMCemployManagement",
         "dev-雇用手続": "webpack --config kintone/app/雇用手続/webpack.config.js --env mode=development --env name=EMCemployProcedure",
         "prd-雇用手続": "webpack --config kintone/app/雇用手続/webpack.config.js --env mode=production --env name=EMCemployProcedure",
         "dev-採用管理": "webpack --config kintone/app/採用管理/webpack.config.js --env mode=development --env name=EMCemployHiring",
@@ -31,14 +31,22 @@
         "prd-社員情報": "webpack --config kintone/app/社員情報/webpack.config.js --env mode=production --env name=EMCemployee",
         "dev-手続管理": "webpack --config kintone/app/手続管理/webpack.config.js --env mode=development --env name=EMCprocedureManagement",
         "prd-手続管理": "webpack --config kintone/app/手続管理/webpack.config.js --env mode=production --env name=EMCprocedureManagement",
-        "dev-通勤管理": "webpack --config kintone/app/通勤管理/webpack.config.js --env mode=development --env name=EMCcommuteInfo",
-        "prd-通勤管理": "webpack --config kintone/app/通勤管理/webpack.config.js --env mode=production --env name=EMCcommuteInfo",
-        "dev-扶養控除": "webpack --config kintone/app/扶養控除/webpack.config.js --env mode=development --env name=EMCdependentExemption",
-        "prd-扶養控除": "webpack --config kintone/app/扶養控除/webpack.config.js --env mode=production --env name=EMCdependentExemption",
+        "dev-通勤情報": "webpack --config kintone/app/通勤情報/webpack.config.js --env mode=development --env name=EMCcommuteInfo",
+        "prd-通勤情報": "webpack --config kintone/app/通勤情報/webpack.config.js --env mode=production --env name=EMCcommuteInfo",
+        "dev-家族情報": "webpack --config kintone/app/家族情報/webpack.config.js --env mode=development --env name=EMCdependentExemption",
+        "prd-家族情報": "webpack --config kintone/app/家族情報/webpack.config.js --env mode=production --env name=EMCdependentExemption",
         "dev-奉行項目変換": "webpack --config kintone/app/奉行項目変換/webpack.config.js --env mode=development --env name=EMCconvertOBCItem",
         "prd-奉行項目変換": "webpack --config kintone/app/奉行項目変換/webpack.config.js --env mode=production --env name=EMCconvertOBCItem",
+        "dev-雇用手続マスタアプリ": "webpack --config kintone/app/雇用手続マスタアプリ/webpack.config.js --env mode=development --env name=EMCemployProcedureMaster",
+        "prd-雇用手続マスタアプリ": "webpack --config kintone/app/雇用手続マスタアプリ/webpack.config.js --env mode=production --env name=EMCemployProcedureMaster",
+        "dev-賞与管理": "webpack --config kintone/app/賞与管理/webpack.config.js --env mode=development --env name=EMCbonusManagement",
+        "prd-賞与管理": "webpack --config kintone/app/賞与管理/webpack.config.js --env mode=production --env name=EMCbonusManagement",
         "dev-連携情報マスタ": "webpack --config kintone/app/連携情報マスタ/webpack.config.js --env mode=development --env name=EMCcorporationMaster",
-        "prd-連携情報マスタ": "webpack --config kintone/app/連携情報マスタ/webpack.config.js --env mode=production --env name=EMCcorporationMaster"
+        "prd-連携情報マスタ": "webpack --config kintone/app/連携情報マスタ/webpack.config.js --env mode=production --env name=EMCcorporationMaster",
+        "dev-formbridge": "webpack --config formbridge/webpack.config.js --env mode=development --env name=formbridge",
+        "prd-formbridge": "webpack --config formbridge/webpack.config.js --env mode=production --env name=formbridge",
+        "dev-kviewer": "webpack --config kviewer/webpack.config.js --env mode=development --env name=kviewer",
+        "prd-kviewer": "webpack --config kviewer/webpack.config.js --env mode=production --env name=kviewer"
     },
     "author": "",
     "license": "ISC",
@@ -66,6 +74,6 @@
         "kintone-ui-component": "^1.6.0",
         "luxon": "^3.1.0",
         "spin.js": "^4.1.1",
-        "sweetalert2": "^11.6.5"
+        "sweetalert2": "^11.4.8"
     }
 }

@@ -5,8 +5,12 @@ const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 module.exports = (param) => {
     param.modeShort = param.mode === 'development' ? 'dev' : 'prd';
     const fullhash = '[fullhash]';
+    let indexFile = 'index.js';
+    if (param.mode === 'development') {
+        indexFile = 'indexDev.js';
+    }
     return {
-        entry: path.resolve(__dirname, './src/js/index.js'),
+        entry: path.resolve(__dirname, `./src/js/${indexFile}`),
         mode: param.mode,
         output: {
             path: path.resolve(__dirname, 'dist', param.modeShort),
@@ -14,6 +18,7 @@ module.exports = (param) => {
             assetModuleFilename: 'images/[name][ext]',
             clean: true,
         },
+        performance: { hints: false },
         module: {
             rules: [
                 {
@@ -36,7 +41,6 @@ module.exports = (param) => {
                 '@js': path.resolve(__dirname, 'src/js/'),
                 '@_common': path.resolve(__dirname, './../../_common/'),
             },
-            // extensions: ['.js'],
         },
         plugins: [
             new webpack.SourceMapDevToolPlugin({
