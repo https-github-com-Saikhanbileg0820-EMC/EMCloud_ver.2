@@ -1,16 +1,9 @@
-import $ from 'jquery';
-import { DateTime } from 'luxon';
-import { KintoneRestAPIClient } from '@kintone/rest-api-client';
-import { Spinner } from 'spin.js';
-import { TextEncoder } from './encoding.js';
-import { MultiChoice } from 'kintone-ui-component/lib/multichoice';
-import Swal from 'sweetalert2';
 
 (() => {
     window.EMC = window.EMC || {};
 
     const client = new KintoneRestAPIClient();
-    // const DateTime = luxon.DateTime;
+    const DateTime = luxon.DateTime;
 
     Object.assign(window.EMC, {
         //%=== 汎用 ===%
@@ -266,7 +259,7 @@ import Swal from 'sweetalert2';
                     }
                 }
                 // 複数選択フィールド生成（kintone UI Component）
-                return new MultiChoice({
+                return new Kuc.MultiChoice({
                     items: multiChoiceItems,
                     value: [''],
                     selectedIndex: [],
@@ -458,6 +451,7 @@ import Swal from 'sweetalert2';
                         }
                     }
                 }
+                console.log(procedureFields)
                 return {
                     salary: salaryFields,
                     procedure: procedureFields,
@@ -477,6 +471,7 @@ import Swal from 'sweetalert2';
                     // 同フィールドに更新情報があった場合に、更新日時が最新のものが優先して反映されるように（降順）したいが、
                     // 後の処理で配列にpushする際に順番が逆になる為、「order by 更新日時 asc」（昇順）で取得する
                     let condition = `雇用区分 = "${employmentName}" and ${queryFunc(year, month, employmentClosingDate)}`;
+                    // let conditionProcedure = `雇用区分_絞込用 = "${employmentName}" and ${queryFunc(year, month, employmentClosingDate)}`;
                     //2022-10-25改修 → "更新日時"から"実行日"への変更
                     let orderBy = `実行日 asc`;
                     // 給与管理／手続管理／支給控除管理から対象実行日のレコードを取得
@@ -503,7 +498,7 @@ import Swal from 'sweetalert2';
                         alreadyEmployee.push({ num: deduction['社員番号'].value, id: deduction['$id'].value });
                         if (forEachEmployee[deduction['社員番号'].value]) {
                             if (forEachEmployee[deduction['社員番号'].value]['deduction']) {
-                                forEachEmployee[deduction['社員番号'].value]['deducation'].push(deduction);
+                                forEachEmployee[deduction['社員番号'].value]['deduction'].push(deduction);
                             } else {
                                 forEachEmployee[deduction['社員番号'].value]['deduction'] = [deduction];
                             }
@@ -556,7 +551,7 @@ import Swal from 'sweetalert2';
                 };
             },
             //*POST用のレコードデータとPUT用のレコードデータの作成・結合
-            JOIN_RECORD: (moldingRecords, COOP_FIELDS, unifyFunc) => {
+            JOIN_RECORD: (moldingRecords, COOP_FIELDS, unifyFunc,employeeJoining) => {
                 let postEmployees = moldingRecords.new; // POST社員
                 let putEmployees = moldingRecords.already; // PUT社員
                 let targetRecords = moldingRecords.target; // 対象レコード情報
@@ -564,18 +559,45 @@ import Swal from 'sweetalert2';
                 let putRecords = [];
                 let postRecords = [];
 
+                console.log(employeeJoining);
+
+                const falseFieldType = ["__ID__","__REVISION__","RECORD_NUMBER","CREATED_TIME","CREATOR","UPDATED_TIME","MODIFIER","FILE"];
+
                 //bodyの作成
                 // POST
+                let postUnifyResult;
                 for (let postEmployee of postEmployees) {
-                    postRecords.push(unifyFunc(targetRecords[postEmployee], COOP_FIELDS));
+                    postUnifyResult = unifyFunc(targetRecords[postEmployee], COOP_FIELDS);
+                    for(let employeeField in employeeJoining[postEmployee]){
+                        if(!postUnifyResult[employeeField] ||  !postUnifyResult[employeeField].value){
+                            if(falseFieldType.indexOf(employeeJoining[postEmployee][employeeField].type) == -1){
+                                postUnifyResult[employeeField] = {value: employeeJoining[postEmployee][employeeField].value};
+                            }
+                        }
+                    }
+                    postRecords.push(postUnifyResult);
                 }
+
+                console.log(postUnifyResult);
+
                 // PUT
+                let putUnifyResult;
                 for (let putEmployee of putEmployees) {
+                    putUnifyResult = unifyFunc(targetRecords[putEmployee.num], COOP_FIELDS);
+                    for(let employField in employeeJoining[putEmployee]){
+                        if(!putUnifyResult[employField] || !putUnifyResult[employField].value){
+                            if(falseFieldType.indexOf(employeeJoining[putEmployee][employField].type) == -1){
+                                putUnifyResult[employField] = {value: employeeJoining[putEmployee][employField].value};
+                            }
+                        }
+                    }
                     putRecords.push({
                         id: putEmployee.id,
-                        record: unifyFunc(targetRecords[putEmployee.num], COOP_FIELDS),
+                        record: putUnifyResult,
                     });
                 }
+
+                console.log(putUnifyResult);
 
                 return {
                     PUT: putRecords,

@@ -1,10 +1,69 @@
-import $ from 'jquery';
-import JSZip from 'jszip';
 
 (function () {
     ('use strict');
 
     const EMC = window.EMC;
+    const client = new KintoneRestAPIClient();
+
+    //===============================削除時、締日処理フラグを下す====================================
+    kintone.events.on(['app.record.index.delete.submit','app.record.detail.delete.submit'], async (e) => {
+        console.log(e);
+        let exeDate = e.record['実行日'].value;
+        let closingDate = e.record['給与締日'].value;
+        let employeeNum = e.record['社員番号'].value;
+        let category = e.record['雇用区分'].value;
+
+        let closingMonth = Number(exeDate.split('-')[1]);
+        if(Number(exeDate.split('-')[2]) > Number(closingDate)){
+            if(closingMonth == 12){
+                closingMonth = 1;
+            }else{
+                closingMonth = Number(closingMonth) + 1;
+            }
+        }
+
+        let targetGetQuery = await EMC.EMPLOYMENT_CLOSING.MAKE_DATE_QUERY(Number(exeDate.split('-')[0]),Number(closingMonth),Number(closingDate));
+
+        let targets = {
+            salary: await EMC.RESTAPI.GET_RECORDS(EMC.APPID.salaryManagement,`社員番号 = "${employeeNum}" and 雇用区分 = "${category}" and ` + targetGetQuery),
+            procedure: await EMC.RESTAPI.GET_RECORDS(EMC.APPID.procedureManagement,`社員番号 = "${employeeNum}" and 雇用区分 = "${category}" and ` + targetGetQuery)
+        };
+
+        let requests = [];
+        for(let target in targets){
+            let request = {
+                method: "PUT",
+                api: "/k/v1/records.json",
+                payload: {
+                    app: target == "procedure"? EMC.APPID.procedureManagement:EMC.APPID.salaryManagement,
+                    records:[]
+                }
+            }
+            for(let targetAppRecord of targets[target]){
+                request.payload.records.push({
+                    id: targetAppRecord['$id'].value,
+                    record:{
+                        '締日処理':{
+                            value: []
+                        }
+                    }
+                });
+            }
+            requests.push(request);
+        }
+        
+        try{
+            if(requests.length){
+                await client.bulkRequest({requests:requests});
+            }
+        }catch(error){
+            console.log(error);
+            return false;
+        }
+
+        return e;
+    })
+    //=============================================================================================
 
     //*============================== 一覧表示時メイン処理（締日処理） ==============================
     kintone.events.on('app.record.index.show', async (e) => {
@@ -45,11 +104,11 @@ import JSZip from 'jszip';
     });
 
     //*============================== フィールド制御処理 ==============================
-    kintone.events.on(['app.record.edit.show', 'app.record.create.show'], (event) => {
+    kintone.events.on(['app.record.edit.show','app.record.create.show'], (event) => {
         const record = event.record;
         // 固定データフィールドを編集不可にする
         EMC.FIELD.DISABLED.forEach((field) => {
-            record[field].disabled = true;
+          record[field].disabled = true;
         });
         //非表示
         EMC.FIELD.HIDDEN.forEach((field) => {
@@ -63,10 +122,10 @@ import JSZip from 'jszip';
         const record = event.record;
         // 固定データフィールドを編集不可にする
         EMC.FIELD.DISABLED.forEach((field) => {
-            record[field].disabled = true;
+          record[field].disabled = true;
         });
-        if ('app.record.create.show' === event.type) {
-            record['社員番号'].disabled = false;
+        if('app.record.create.show'===event.type){
+          record["社員番号"].disabled=false
         }
         record.性別.disabled = true;
         record.雇用区分.disabled = true;
@@ -269,22 +328,81 @@ import JSZip from 'jszip';
             return;
         }
 
-        // ---------------------------------------------------------------------------
+        // ----◆締日処理済フラグ-----------------------------------------------------------------
         let clothingFlg = {};
-        for (let subjectRecord of subjectRecords) {
-            for (let subject in subjectRecord) {
-                if (clothingFlg[subject]) {
-                    if (subjectRecord[subject]) {
-                        clothingFlg[subject].push(subjectRecord[subject]);
+        let joiningCompany = [];
+        for(let subjectRecord of subjectRecords){
+            for(let subject in subjectRecord){
+                if(subject == 'deduction')continue;
+                for(let subRecord of subjectRecord[subject]){
+                    if(subRecord['申請区分'].value == '入社' || subRecord['申請区分'].value == '入社手続'){
+                        if(joiningCompany.indexOf(subRecord['社員番号'].value) == -1){
+                            joiningCompany.push(subRecord['社員番号'].value);
+                        }
                     }
-                } else {
-                    if (subjectRecord[subject]) {
+                }
+                if(clothingFlg[subject]){
+                    if(subjectRecord[subject].length){
+                        clothingFlg[subject] = clothingFlg[subject].concat(subjectRecord[subject]);
+                    }
+                }else{
+                    if(subjectRecord[subject].length){
                         clothingFlg[subject] = subjectRecord[subject];
                     }
                 }
             }
         }
-        console.log(clothingFlg);
+        console.log(joiningCompany);
+
+        let flgRequest = [];
+        for(let flgApp in clothingFlg){
+            let params = {
+                method: "PUT",
+                api: "/k/v1/records.json",
+                payload: {
+                    app: flgApp == "procedure"? EMC.APPID.procedureManagement:EMC.APPID.salaryManagement,
+                    records:[]
+                }
+            }
+            for(let clothing of clothingFlg[flgApp]){
+                params.payload.records.push({
+                    id: clothing["$id"].value,
+                    record:{
+                        "締日処理":{
+                            value: ["済"]
+                        }
+                    }
+                });
+            }
+            flgRequest.push(params);
+        }
+
+        let joiningEmployee;
+        try{
+            let joiningCondition = '';
+            for(let joining of joiningCompany){
+                if(joiningCondition == ''){
+                    joiningCondition = `"${joining}"`;
+                }else{
+                    joiningCondition = joiningCondition + `,"${joining}"`;
+                }
+            }
+            joiningEmployee = await EMC.RESTAPI.GET_RECORDS(EMC.APPID.employment,`社員番号 in (${joiningCondition})`);
+            
+        }catch(error){
+            EMC.ERROR('処理に失敗しました');
+            EMC.SPIN.HIDE();
+            return false;
+        }
+        
+        // ---------------------------------------------------------------------------
+        console.log(joiningEmployee);
+        let employeeJoining = {};
+        for(let joinEmploy of joiningEmployee){
+            employeeJoining[joinEmploy['社員番号'].value] = joinEmploy;
+        }
+        console.log(employeeJoining);
+
         // ---------------------------------------------------------------------------
 
         //対象レコード0件の確認
@@ -308,10 +426,13 @@ import JSZip from 'jszip';
             // 社員番号ごとにデータを統合する
             moldingRecords = await EMC.CLOSING_DATE_PROCESS.DATA_FORMATTING(subjectRecords);
             // POSTとPUTの情報を作成する
-            coopRecords = await EMC.CLOSING_DATE_PROCESS.JOIN_RECORD(moldingRecords, COOP_FIELDS, EMC.CLOSING_DATE_PROCESS.UNIFICATION_RECORDS);
+            coopRecords = await EMC.CLOSING_DATE_PROCESS.JOIN_RECORD(moldingRecords, COOP_FIELDS, EMC.CLOSING_DATE_PROCESS.UNIFICATION_RECORDS,employeeJoining);
             // 支給控除管理アプリにレコード追加・更新
             await EMC.RESTAPI.POST_RECORDS(EMC.APPID.paymentDeduction, coopRecords.POST);
             await EMC.RESTAPI.PUT_RECORDS(EMC.APPID.paymentDeduction, coopRecords.PUT);
+            if(flgRequest.length){
+                await client.bulkRequest({requests:flgRequest});
+            }
 
             //終了アラート
             await EMC.ALERT.FINISH(`${closingYear}月${closingMonth}月分の<br>締日処理が完了しました`, '対象のレコードを追加・更新しました');
@@ -321,7 +442,7 @@ import JSZip from 'jszip';
             location.reload();
         } catch (e) {
             EMC.ERROR(e);
-            console.log('end');
+            console.log("end")
             EMC.SPIN.HIDE();
             return;
         }
@@ -375,13 +496,7 @@ import JSZip from 'jszip';
             eachClosingRecordsList = await Promise.all(promiseAry);
             //対象レコード全件が最初のステータス（出力対象のステータス）か確認→1件でも対象外のものがあったらエラー＆処理中断
             if (!EMC.CSV.CHECK_STATUS(eachClosingRecordsList, await EMC.STATUS.GET_FIRST())) {
-                const employmentFormat = employmentList
-                    .map((employment) => {
-                        return `"${employment.employment}"`;
-                    })
-                    .join(',');
-                const condition = `ステータス = "申請中" and 雇用区分 in (${employmentFormat})`;
-                EMC.ERROR(`承認が完了していないレコードが存在します<br><a href="${EMC.URL}${kintone.app.getId()}/?query=${encodeURIComponent(condition)}" target="_blank">対象雇用区分の未承認レコードを確認する</a>`);
+                EMC.ERROR(`承認が完了していないレコードが存在します<br><a href="${EMC.URL}${kintone.app.getId()}/?view=${await EMC.RESTAPI.GET_VIEWID(kintone.app.getId(), EMC.VIEW.unapproved)}" target="_blank">対象レコードを確認する</a>`);
                 EMC.SPIN.HIDE();
                 return;
             }
