@@ -1,5 +1,9 @@
-import * as modules from "./modules";
-import * as constants from "./constants";
+import '../css/style.css';
+
+import * as modules from './modules';
+import * as constants from './constants';
+import './modules/EMC';
+import './modules/style';
 
 // ネームスペース定義
 window.EMCloud = window.EMCloud || {};
