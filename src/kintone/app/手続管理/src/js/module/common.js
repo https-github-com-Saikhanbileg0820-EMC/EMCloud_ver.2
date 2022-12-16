@@ -1,3 +1,4 @@
+import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 (async () => {
     "use strict";
 
@@ -40,8 +41,13 @@
         UPDATE_EMPLOYEE_BODY: async (record,COOP_FIELDS,attend) => {
             let employeePutBody = {};
             for(let coopRecord of COOP_FIELDS){
-                if(!record[coopRecord['EMCloudフィールドコード'].value]){continue};
-                if(coopRecord['EMCloudフィールドコード'].value == '社員番号' || !record[coopRecord['EMCloudフィールドコード'].value].value){continue};
+                if(!record[coopRecord['EMCloudフィールドコード'].value]){
+                  employeePutBody[coopRecord['EMCloudフィールドコード'].value] = {value:""};
+                  continue};
+                if(coopRecord['EMCloudフィールドコード'].value == '社員番号' || !record[coopRecord['EMCloudフィールドコード'].value].value){
+                  if(coopRecord['EMCloudフィールドコード'].value == '社員番号'){continue}
+                  employeePutBody[coopRecord['EMCloudフィールドコード'].value] = {value:""};
+                  continue};
                 if(coopRecord['EMCloudフィールドコード'].value == '変更日'){
                     let changeDateField;
                     switch(record['申請区分'].value){
@@ -94,10 +100,16 @@
         HISTORY_EMPLOYEE_BODY: async (record,COOP_FIELDS,attend,employRecord) => {
             let employeePutBody = {};
             for(let coopRecord of COOP_FIELDS){
-                if(!record[coopRecord['EMCloudフィールドコード'].value]){continue};
+              
+                if(!record[coopRecord['EMCloudフィールドコード'].value]){
+                  if(employRecord[coopRecord['EMCloudフィールドコード'].value] ){
+                    employeePutBody[coopRecord['EMCloudフィールドコード'].value] = {value:employRecord[coopRecord['EMCloudフィールドコード'].value].value};
+                };
+                  continue};
                 if(record[coopRecord['EMCloudフィールドコード'].value].value){
                     employeePutBody[coopRecord['EMCloudフィールドコード'].value] = {value:record[coopRecord['EMCloudフィールドコード'].value].value};
-                }else if(employRecord[coopRecord['EMCloudフィールドコード'].value] && record['申請区分'].value == '入社手続'){
+                }else if(employRecord[coopRecord['EMCloudフィールドコード'].value] ){
+                  if(record[coopRecord['EMCloudフィールドコード'].value].value===""||record[coopRecord['EMCloudフィールドコード'].value].value===null) continue;
                     employeePutBody[coopRecord['EMCloudフィールドコード'].value] = {value:employRecord[coopRecord['EMCloudフィールドコード'].value].value};
                 };
             }
@@ -111,7 +123,7 @@
                 }
             }
         },
-        APPLICATION_CATEGORIES: async (category,employment,basicInfomation,commuteInfo,dependentExemption) => {
+        APPLICATION_CATEGORIES: async (category,employment,basicInfomation,commuteInfo,dependentExemption,employManagement) => {
             let categoriesArray;
             switch(category){
                 case '基本情報':
@@ -120,10 +132,10 @@
                     categoriesArray = [employment,basicInfomation];
                     break;
                 case '家族情報':
-                    categoriesArray = [employment,commuteInfo];
+                    categoriesArray = [employment,dependentExemption];
                     break;
                 case '通勤情報':
-                    categoriesArray = [employment,dependentExemption];
+                    categoriesArray = [employment,commuteInfo];
                     break;
                 case '休職（その他）':
                 case '休職（産休育休）':
@@ -133,10 +145,10 @@
                     categoriesArray = [employment];
                     break;
                 case '入社手続':
-                    categoriesArray = [employment,basicInfomation,commuteInfo,dependentExemption];
+                    categoriesArray = [employment,basicInfomation,commuteInfo,dependentExemption,employManagement];
                     break;
                 case '契約更改':
-                    categoriesArray = [employment];
+                    categoriesArray = [employment,basicInfomation,commuteInfo,employManagement];
                     break;
                 default:
                     break;

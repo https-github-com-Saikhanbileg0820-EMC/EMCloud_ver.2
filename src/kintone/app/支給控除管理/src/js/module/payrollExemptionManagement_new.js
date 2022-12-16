@@ -1,4 +1,7 @@
-
+import { KintoneRestAPIClient } from '@kintone/rest-api-client';
+import $ from 'jquery';
+import JSZip from 'jszip';
+import { DateTime } from 'luxon'
 (function () {
     ('use strict');
 
@@ -9,7 +12,14 @@
     kintone.events.on(['app.record.index.delete.submit','app.record.detail.delete.submit'], async (e) => {
         console.log(e);
         let exeDate = e.record['実行日'].value;
-        let closingDate = e.record['給与締日'].value;
+        let closingDate 
+        if(e.record['給与締日'].value===""){
+          closingDate = "月末"
+        }else{
+          closingDate = e.record['給与締日'].value
+          closingDate = Number(closingDate)
+        }
+        
         let employeeNum = e.record['社員番号'].value;
         let category = e.record['雇用区分'].value;
 
@@ -22,7 +32,7 @@
             }
         }
 
-        let targetGetQuery = await EMC.EMPLOYMENT_CLOSING.MAKE_DATE_QUERY(Number(exeDate.split('-')[0]),Number(closingMonth),Number(closingDate));
+        let targetGetQuery = await EMC.EMPLOYMENT_CLOSING.MAKE_DATE_QUERY(Number(exeDate.split('-')[0]),Number(closingMonth),closingDate);
 
         let targets = {
             salary: await EMC.RESTAPI.GET_RECORDS(EMC.APPID.salaryManagement,`社員番号 = "${employeeNum}" and 雇用区分 = "${category}" and ` + targetGetQuery),
@@ -110,6 +120,14 @@
         EMC.FIELD.DISABLED.forEach((field) => {
           record[field].disabled = true;
         });
+        let kazoku = record["t_家族"].value
+        for (let i in kazoku){
+          Object.keys(kazoku[i].value).forEach((key)=>{
+            kazoku[i].value[`${key}`].disabled=true;
+          });
+        }
+        $(".add-row-image-gaia").hide();
+        $(".remove-row-image-gaia").hide();
         //非表示
         EMC.FIELD.HIDDEN.forEach((field) => {
             kintone.app.record.setFieldShown(field, false);
@@ -134,7 +152,7 @@
     });
 
     //*============================== ルックアップの制御処理 ==============================
-    const cevents = ['app.record.create.change.雇用区分コピー', 'app.record.edit.change.雇用区分コピー', 'app.record.create.change.性別コピー', 'app.record.edit.change.性別コピー'];
+    const cevents = ['app.record.create.change.雇用区分コピー', 'app.record.edit.change.雇用区分コピー', 'app.record.create.change.性別コピー', 'app.record.edit.change.性別コピー','app.record.edit.show','app.record.detail.show'];
     kintone.events.on(cevents, (event) => {
         const record = event.record;
 
@@ -378,7 +396,9 @@
         }
 
         let joiningEmployee;
-        try{
+        let employeeJoining = {};
+        if(joiningCompany.length!==0){
+            try{
             let joiningCondition = '';
             for(let joining of joiningCompany){
                 if(joiningCondition == ''){
@@ -394,15 +414,15 @@
             EMC.SPIN.HIDE();
             return false;
         }
+    
         
         // ---------------------------------------------------------------------------
         console.log(joiningEmployee);
-        let employeeJoining = {};
         for(let joinEmploy of joiningEmployee){
             employeeJoining[joinEmploy['社員番号'].value] = joinEmploy;
         }
         console.log(employeeJoining);
-
+    }
         // ---------------------------------------------------------------------------
 
         //対象レコード0件の確認
@@ -483,30 +503,121 @@
             promiseAry = [];
             closingList.forEach((closing) => {
                 promiseAry.push(EMC.RESTAPI.GET_RECORDS(EMC.APPID.paymentDeduction, `(${EMC.EMPLOYMENT_CLOSING.MAKE_EMPLOYMENT_QUERY(closing.employment)}) and ${EMC.EMPLOYMENT_CLOSING.MAKE_DATE_QUERY(year, month, closing.closing)}`));
+              
             });
         } catch (e) {
             EMC.ERROR(e);
             EMC.SPIN.HIDE();
             return;
         }
-
-        let OBCRecords, eachClosingRecordsList;
-        const zip = new JSZip();
+        let  eachClosingRecordsList
+        let targetObjs = [];
         try {
             eachClosingRecordsList = await Promise.all(promiseAry);
             //対象レコード全件が最初のステータス（出力対象のステータス）か確認→1件でも対象外のものがあったらエラー＆処理中断
             if (!EMC.CSV.CHECK_STATUS(eachClosingRecordsList, await EMC.STATUS.GET_FIRST())) {
-                EMC.ERROR(`承認が完了していないレコードが存在します<br><a href="${EMC.URL}${kintone.app.getId()}/?view=${await EMC.RESTAPI.GET_VIEWID(kintone.app.getId(), EMC.VIEW.unapproved)}" target="_blank">対象レコードを確認する</a>`);
+              let close = closingList[0].employment.split(",")
+              let list = `雇用区分 = "${close.shift()}"`
+              close.forEach((c)=>{  list =list.concat(` or 雇用区分 = "${c}"`)})
+              let error = `ステータス != "承認済" and ${EMC.EMPLOYMENT_CLOSING.MAKE_DATE_QUERY(year, month,30)} and (${list})`
+              let ab8 = encodeURIComponent(error);
+                EMC.ERROR(`承認が完了していないレコードが存在します<br><a href="${EMC.URL}${kintone.app.getId()}/?query=${ab8}" target="_blank">対象レコードを確認する</a>`);
                 EMC.SPIN.HIDE();
                 return;
             }
+            //締日数だけCSVファイルデータの作成を行う
+            const convertOBCRecords = await EMC.RESTAPI.GET_RECORDS(EMC.APPID.convertOBCItem);
+            eachClosingRecordsList.forEach( async (eachClosingRecords) => {
+                if (eachClosingRecords.length > 0) {
+                  let objs = []
+                  for(let i in eachClosingRecords){
+                    let value = eachClosingRecords[i]
+                    let obj = {"$id":value.$id.value}
+                    let cont = 1
+                    for(let j in value["t_家族"].value){
+                      let subtable = value["t_家族"].value[j].value
+                      Object.keys(subtable).forEach((keys)=>{
+                        let check = `${keys}_${cont}_奉行`
+                        let aru =`${keys}_${cont}`
+                        if(!Object.hasOwn(value,check)){
+                          value[`${aru}`]=subtable[keys]
+                          
+                        }else{
+                          obj[`${aru}`]=subtable[keys].value
+                        }
+                        
+                      })
+                      cont++
+                    }
+                    let methodFixed = false;
+                    convertOBCRecords.forEach((OBCRecord) => {
+                        if (!methodFixed && OBCRecord.起票元アプリID.value == kintone.app.getId() && OBCRecord.起票元レコードID.value == value.$id.value) {
+                            objs.push({
+                                record: obj,
+                                method: 'PUT',
+                                id: OBCRecord.$id.value,
+                            });
+                            methodFixed = true;
+                        }
+                    });
+                    if (!methodFixed) {
+                        objs.push({
+                            record: obj,
+                            method: 'POST',
+                            id: '',
+                        });
+                    }
+                  }
+                   targetObjs.push(objs);
+                }else{
+                throw new Error('対象のレコードが存在しません');
+                }
+            });
+            
+        } catch (e) {
+            EMC.ERROR(e);
+            EMC.SPIN.HIDE();
+            return;
+        }
+        try{
+            await EMC.CONVERT_APP_COOP.BULK( EMC.APPID.convertOBCItem, targetObjs, EMC.RESTAPI.PUT_RECORDS, EMC.RESTAPI.POST_RECORDS);
+          
+        }catch (e) {
+            EMC.ERROR(e);
+            EMC.SPIN.HIDE();
+            return;
+        }
+        let convertOBCRecord =  await EMC.RESTAPI.GET_RECORDS(EMC.APPID.convertOBCItem);
+          console.log(convertOBCRecord)
+            eachClosingRecordsList.forEach((eachClosingRecords) => {
+                  eachClosingRecords.forEach((record) => {
+                    let targetRecord = {}
+                    convertOBCRecord.forEach((OBCRecord) => {
+                          if (OBCRecord.起票元アプリID.value == kintone.app.getId() && OBCRecord.起票元レコードID.value == record.$id.value) {
+                            Object.keys(OBCRecord).forEach((key)=>{
+                              if(OBCRecord[key].value!==""){
+                              targetRecord[`${key}`]=OBCRecord[key]
+                              }
+                            })
+                          }
+                    });
+                    console.log(targetRecord)
+                       record =(Object.assign(record,targetRecord))
+                  });
+                  console.log(eachClosingRecordsList)
+            });
+        let OBCRecords, eachClosingRecordsLists
+        const zip = new JSZip();
+        try {
+          eachClosingRecordsLists=await Promise.all(eachClosingRecordsList);
             //奉行コードマスタアプリのレコード情報取得
             OBCRecords = await EMC.RESTAPI.GET_RECORDS(EMC.APPID.corporationMaster, `奉行コード != "" and 項目区分 not in ("賞与")`, `奉行コード asc`);
-
+            console.log(eachClosingRecordsLists)
             //締日数だけCSVファイルデータの作成を行う
             let processContinuousFlag;
-            eachClosingRecordsList.forEach((eachClosingRecords) => {
+            eachClosingRecordsLists.forEach((eachClosingRecords) => {
                 if (eachClosingRecords.length > 0) {
+                  console.log(eachClosingRecords)
                     EMC.CSV.MAKE_FILE(eachClosingRecords, OBCRecords, employmentList, year, month, EMC.CSV.MAKE_DATA, zip);
                     processContinuousFlag = true;
                 }

@@ -34,7 +34,8 @@ import { KintoneRestAPIClient } from '@kintone/rest-api-client';
             paramObj[field] = { value: selfRecord.record[field].value };
           }
         }
-        paramObj["雇用手続区分"] = { value: "入社" };
+        paramObj["実行日"] = { value: selfRecord.record["入社年月日"].value };
+        paramObj["雇用手続区分"] = { value: "入社手続" };
         return paramObj;
     };
 

@@ -4,8 +4,9 @@ import './module/config.js';
 import './module/common';
 import './module/EMC2_appCoordination.js';
 import './module/yubinkensaku.js';
-import './module/age_calculator';
-import './module/undeletable';
+import './module/age_calculator.js';
+import './module/undeletable.js';
+import './module/CheckCopy.js';
 
 (function () {
     //ライセンスキーチェック

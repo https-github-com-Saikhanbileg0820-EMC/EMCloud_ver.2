@@ -1,7 +1,9 @@
+import { KintoneRestAPIClient } from '@kintone/rest-api-client';
+import swal from 'sweetalert2';
 (function(){
   'use strict';
 
-  const REQUESTS = ['基本情報','家族情報','通勤情報','口座情報','住所変更','休職','復職','退職','休職_退職','産休_育休','入社手続'];
+  const REQUESTS = ['基本情報','家族情報','通勤情報','口座情報','住所変更','休職','復職','退職','休職_退職','産休_育休','入社手続','人事部入力'];
   const client = new KintoneRestAPIClient();
   const CONFIG = window.EMC;
 
@@ -20,11 +22,11 @@
 
   kintone.events.on(['app.record.create.show','app.record.edit.show','app.record.detail.show'], (e) => {
     kintone.app.record.setFieldShown(`雇用区分`,false);
-    e.record['締日処理'].disabled = true;
+    //e.record['締日処理'].disabled = true;
     return e;
   })
   kintone.events.on(['app.record.create.show','app.record.edit.show'], (e) => {
-    e.record['締日処理'].disabled = true;
+    //e.record['締日処理'].disabled = true;
     return e;
   })
 
@@ -35,6 +37,7 @@
       for(let requestGroup of REQUESTS){
         kintone.app.record.setFieldShown(`g_${requestGroup}`,false);
       }
+        kintone.app.record.setFieldShown("t_家族",false)
       // 「申請区分」が選択されていたら対象グループを表示
       if(request){
         switch(request){
@@ -65,13 +68,24 @@
             kintone.app.record.setFieldShown(`g_退職`,true);
             kintone.app.record.setFieldShown(`g_休職_退職`,true);
             break;
+          case '家族情報':
+            kintone.app.record.setFieldShown(`g_家族情報`,true);
+            kintone.app.record.setFieldShown("t_家族",true)
+            break;
           case '入社手続':
             kintone.app.record.setFieldShown(`g_入社手続`,true);
-            // kintone.app.record.setFieldShown(`g_人事部入力`,true);
+            kintone.app.record.setFieldShown(`g_人事部入力`,true);
+            kintone.app.record.setFieldShown(`g_住所変更`,true);
+            kintone.app.record.setFieldShown(`g_通勤情報`,true);
+            kintone.app.record.setFieldShown(`g_家族情報`,true);
+            kintone.app.record.setFieldShown("t_家族",true)
+            kintone.app.record.setFieldShown("g_口座情報",true)
+            kintone.app.record.setFieldShown("g_基本情報",true)
             break;
           case '契約更改':
-            // kintone.app.record.setFieldShown(`g_人事部入力`,true);
-            // kintone.app.record.setFieldShown(`g_`,true);
+            kintone.app.record.setFieldShown(`g_人事部入力`,true);
+            kintone.app.record.setFieldShown(`g_住所変更`,true);
+            kintone.app.record.setFieldShown(`g_通勤情報`,true);
             break;
           default:
             kintone.app.record.setFieldShown(`g_${request}`,true);
@@ -274,7 +288,9 @@
                     let postRecordArray = [];
                     for(let perApplicationRecord of perApplication[Application]){
                       let postRecordObj = {};
+                      console.log(perApplicationRecord)
                       for(let perApplicationFields of applicationsFields[Application]){
+                        if(!perApplicationRecord[perApplicationFields]||!perApplicationRecord[perApplicationFields].value)continue;
                           postRecordObj[perApplicationFields] = {"value": perApplicationRecord[perApplicationFields].value}
                       }
                       postRecordArray.push(postRecordObj);
@@ -287,10 +303,10 @@
                         coopId = CONFIG.APPID.basicInfomation
                         break;
                       case '家族情報':
-                        coopId = CONFIG.APPID.commuteInfo
+                        coopId = CONFIG.APPID.dependentExemption
                         break;
                       case '通勤情報':
-                        coopId = CONFIG.APPID.dependentExemption
+                        coopId = CONFIG.APPID.commuteInfo
                         break;
                      default:
                       break;

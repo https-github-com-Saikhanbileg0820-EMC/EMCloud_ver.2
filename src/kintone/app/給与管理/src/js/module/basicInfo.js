@@ -1,3 +1,4 @@
+import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 (function() {
   'use strict';
   const skipFieldType = ['CATEGORY','CREATED_TIME','CREATOR','MODIFIER','RECORD_NUMBER','STATUS','STATUS_ASSIGNEE','UPDATED_TIME'];

@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 (async ($) => {
     window.EMC = window.EMC || {};
-
+    
     //スペース内アプリIDの取得
     const appInfo = await kintone.api(kintone.api.url('/k/v1/app', true), 'GET', { id: kintone.app.getId() });
     const spaceId = appInfo.spaceId;
@@ -22,7 +22,7 @@ import $ from 'jquery';
             dependentExemption: appIds.EMCdependentExemption, //?扶養控除
             commuteInfo: appIds.EMCcommuteInfo, //?通勤管理
             basicInfomation: appIds.EMCbasicInfomation, //?基本情報
-            employProcedureMaster: appIds.EMCemployProcedureMaster, //?雇用手続マスタアプリ
+            employProcedureMaster: appIds.EMCemployProcedureMaster //?雇用手続マスタアプリ
         },
 
         //*各DOM要素ID情報
@@ -42,14 +42,17 @@ import $ from 'jquery';
                 '社員番号',
                 '契約区分',
                 '入社年月日',
+                '雇用手続区分',
                 '所属',
                 '氏名',
                 '氏名_フリガナ',
                 '生年月日',
                 '年齢',
                 '性別',
+                '実行日',
                 '入社区分',
                 '応募職種',
+                '職種',
                 '現住所_郵便番号',
                 '現住所_都道府県',
                 '現住所_市区町村',
@@ -57,7 +60,7 @@ import $ from 'jquery';
                 '現住所_建物名',
                 '現住所_都道府県_カナ',
                 '現住所_市区町村_カナ',
-                '現住所_番地_建物名',
+                '現住所_建物名_カナ',
                 '現住所',
                 '現住所カナ',
                 '電話番号1',
@@ -73,7 +76,7 @@ import $ from 'jquery';
                 '住民票_建物名',
                 '住民票_都道府県_カナ',
                 '住民票_市区町村_カナ',
-                '住民票_番地_建物名',
+                '住民票_建物名_カナ',
                 '住民票',
                 '住民票カナ',
                 '緊急連絡先住所_郵便番号',
@@ -83,7 +86,7 @@ import $ from 'jquery';
                 '緊急連絡先住所_建物名',
                 '緊急連絡先住所_都道府県_カナ',
                 '緊急連絡先住所_市区町村_カナ',
-                '緊急連絡先住所_番地_建物名',
+                '緊急連絡先住所_建物名_カナ',
                 '緊急連絡先住所',
                 '緊急連絡先住所カナ',
                 '緊急連絡先住所_電話番号',
@@ -99,10 +102,10 @@ import $ from 'jquery';
                 '職務経歴書',
                 '応募受付年月日',
                 '採用経路',
-                '辞退・取消タスク',
-                '辞退・取消確定',
-                '辞退・取消年月日',
-                '辞退・取消理由',
+                '辞退_取消タスク',
+                '辞退_取消確定',
+                '辞退_取消年月日',
+                '辞退_取消理由',
                 '労働条件_入社年月日',
                 '労働条件_社員番号',
                 '雇用区分',

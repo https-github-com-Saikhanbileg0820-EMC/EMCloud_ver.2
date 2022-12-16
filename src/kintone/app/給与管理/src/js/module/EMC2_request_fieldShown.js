@@ -1,3 +1,4 @@
+import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 (function(){
   'use strict';
 

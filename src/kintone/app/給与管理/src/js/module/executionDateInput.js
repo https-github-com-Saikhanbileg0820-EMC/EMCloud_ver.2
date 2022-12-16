@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+import $ from 'jquery';
 (() => {
     ("use strict");
 
@@ -26,11 +28,30 @@
                     Swal.showValidationMessage("実行日が入力されていません");
                 }
             },
-        }).then((result) => {
+        }).then(async(result) => {
             if (result.isConfirmed) {
                 const date = $("#date_test").val();
                 record.実行日.value = date;
-                return event;
+                let requestCategory = record.申請区分.value;
+
+                let attendant = await CONFIG.APPLICATION_CATEGORIES(requestCategory,CONFIG.APPID.employment,CONFIG.APPID.basicInfomation,CONFIG.APPID.commuteInfo,CONFIG.APPID.dependentExemption,CONFIG.APPID.employManagement);
+                
+                console.log(attendant);
+                let employManagementRecords = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.employManagement,'orderBy':"$id desc", 'condition': `社員番号 = "${record['社員番号'].value}"`} );
+                console.log(employManagementRecords)
+                const COOP_FIELDS = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.corporationMaster,'condition': `該当申請 in ("${record['申請区分'].value}")`});
+                let employeeRequestBody = [];
+                for(let attend of attendant){
+                    if(attend == CONFIG.APPID.employment){
+                        employeeRequestBody.push(await CONFIG.UPDATE_EMPLOYEE_BODY(record,COOP_FIELDS,attend));
+                    }else{
+                        employeeRequestBody.push(await CONFIG.HISTORY_EMPLOYEE_BODY(record,COOP_FIELDS,attend,employManagementRecords[0]));
+                    }
+                    
+                }
+                console.log(employeeRequestBody);
+
+                await CONFIG.BULKREQUEST({requests: employeeRequestBody});
             } else {
                 return false;
             }

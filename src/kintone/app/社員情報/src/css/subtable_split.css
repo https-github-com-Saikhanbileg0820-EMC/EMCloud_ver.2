@@ -1,0 +1,54 @@
+.subtable-transform-btn-group {
+  margin-left: 1em;
+}
+.subtable-transform-btn-group::before {
+  content: "[";
+  margin-right: 0.5em;
+}
+.subtable-transform-btn-group::after {
+  content: "]";
+  margin-left: 0.5em;
+}
+.subtable-transform-btn-group .subtable-transform-btn-delimiter {
+  margin: 0 0.5em;
+}
+.subtable-transform-btn-group .subtable-transform-btn {
+  color: #3498db;
+  cursor: pointer;
+  display: inline-block;
+}
+.subtable-transform-btn-group .subtable-transform-btn-active {
+  color: unset;
+  pointer-events: none;
+}
+
+.subtable-row-gaia table {
+  position: relative;
+}
+
+.subtable-row-gaia.subtable-split, .subtable-row-gaia.subtable-split-each {
+  padding: 10px;
+  border-radius: 5px;
+}
+.subtable-row-gaia.subtable-split table tr, .subtable-row-gaia.subtable-split-each table tr {
+  position: relative;
+}
+.subtable-row-gaia.subtable-split table tr th:not(.hidden-subtable-field), .subtable-row-gaia.subtable-split-each table tr th:not(.hidden-subtable-field) {
+  position: absolute;
+  display: flex;
+  align-items: center;
+}
+.subtable-row-gaia.subtable-split table tr td:not(.hidden-subtable-field), .subtable-row-gaia.subtable-split-each table tr td:not(.hidden-subtable-field) {
+  position: absolute;
+}
+.subtable-row-gaia.subtable-split-each {
+  overflow: visible;
+}
+.subtable-row-gaia.subtable-split-each thead tr:not(:nth-child(1)) th:nth-child(1)::before {
+  content: "";
+  width: 1000px;
+  border-top: 3px dashed rgba(52, 152, 219, 0.5);
+  position: absolute;
+  top: -39px;
+  left: -10px;
+}

@@ -1,4 +1,8 @@
-
+import { KintoneRestAPIClient } from '@kintone/rest-api-client';
+import { Spinner } from 'spin.js';
+import { TextEncoder } from './encoding.js';
+import Swal from 'sweetalert2';
+import $ from 'jquery';
 (() => {
     window.EMC = window.EMC || {};
 
@@ -298,6 +302,7 @@
                 }
                 closing += '締め';
                 const folder = zip.folder(`【${closing}】`);
+                console.log(folder)
                 //CSVデータ作成&ZIPファイルに追加処理
                 makeDatefunc(eachEmploymentRecords, OBCRecords, year, month, closing, folder);
             },
@@ -318,7 +323,7 @@
                         fixedColumnInfo.push({ header: record.奉行コード.value, fieldCode: record.EMCloudフィールドコード.value });
                     }
                 });
-
+                console.log(allColumnInfo)
                 allColumnInfo.forEach((columnInfo, majorIndex) => {
                     let type;
                     if (majorIndex === 0) {
@@ -339,13 +344,15 @@
                     });
                     //CSV内容の作成
                     eachEmploymentRecords.forEach((record, indexPaDe, arrayPaDe) => {
+                      console.log(record)
                         columnInfo.forEach((column, indexColu, arrayColu) => {
                             if (record[column.fieldCode]) {
                                 //値がnullの場合は空文字に変換
-                                let value = record[column.fieldCode].value;
+                                let value = record[`${column.fieldCode}`].value;
                                 if (value === null) {
                                     value = '';
                                 }
+                                
                                 data = `${data}${value},`;
                             } else {
                                 data = `${data},`;
@@ -370,7 +377,7 @@
 
         //?ZIPファイルの出力
         DOWNLOAD_ZIP: async (zip, year, month) => {
-            const encoder = new TextEncoder('shift_jis', { NONSTANDARD_allowLegacyEncoding: true });
+            let encoder = new TextEncoder('shift_jis', { NONSTANDARD_allowLegacyEncoding: true });
             const blob = await zip.generateAsync({ type: 'blob', encodeFileName: (fileName) => encoder.encode(fileName) });
             if (window.navigator.msSaveBlob) {
                 window.navigator.msSaveBlob(blob);
@@ -447,11 +454,12 @@
                             salaryFields.push(COOPS[recordIndex]['EMCloudフィールドコード'].value);
                         }
                         if (appName === '手続管理') {
-                            procedureFields.push(COOPS[recordIndex]['EMCloudフィールドコード'].value);
+                          //連携情報データ抜き取
+                          if(COOPS[recordIndex]['EMCloudフィールドコード'].value.split("_")[1]==="家族"){if(COOPS[recordIndex]['EMCloudフィールドコード'].value==="t_家族")procedureFields.push(COOPS[recordIndex]['EMCloudフィールドコード'].value);}else{procedureFields.push(COOPS[recordIndex]['EMCloudフィールドコード'].value);}
+                            
                         }
                     }
                 }
-                console.log(procedureFields)
                 return {
                     salary: salaryFields,
                     procedure: procedureFields,
@@ -470,10 +478,10 @@
                     // 給与管理・手続管理・支給控除管理に対して対象のレコードを絞り込むクエリを作成
                     // 同フィールドに更新情報があった場合に、更新日時が最新のものが優先して反映されるように（降順）したいが、
                     // 後の処理で配列にpushする際に順番が逆になる為、「order by 更新日時 asc」（昇順）で取得する
-                    let condition = `雇用区分 = "${employmentName}" and ${queryFunc(year, month, employmentClosingDate)}`;
+                    let condition = `雇用区分 = "${employmentName}" and ${queryFunc(year, month, employmentClosingDate)} and ステータス = "承認済"`;
                     // let conditionProcedure = `雇用区分_絞込用 = "${employmentName}" and ${queryFunc(year, month, employmentClosingDate)}`;
                     //2022-10-25改修 → "更新日時"から"実行日"への変更
-                    let orderBy = `実行日 asc`;
+                    let orderBy = `実行日 asc , $id asc`;
                     // 給与管理／手続管理／支給控除管理から対象実行日のレコードを取得
                     let salary = await getFunc(appId.salary, condition, orderBy); // 給与管理
                     let procedure = await getFunc(appId.procedure, condition, orderBy); // 手続管理
@@ -485,6 +493,7 @@
                         deduction: deduction,
                     });
                 }
+                console.log(targetPeriodRecords)
                 return targetPeriodRecords;
             },
             //*社員番号でのデータ統合
@@ -559,7 +568,7 @@
                 let putRecords = [];
                 let postRecords = [];
 
-                console.log(employeeJoining);
+                console.log(targetRecords);
 
                 const falseFieldType = ["__ID__","__REVISION__","RECORD_NUMBER","CREATED_TIME","CREATOR","UPDATED_TIME","MODIFIER","FILE"];
 
@@ -568,12 +577,15 @@
                 let postUnifyResult;
                 for (let postEmployee of postEmployees) {
                     postUnifyResult = unifyFunc(targetRecords[postEmployee], COOP_FIELDS);
-                    for(let employeeField in employeeJoining[postEmployee]){
-                        if(!postUnifyResult[employeeField] ||  !postUnifyResult[employeeField].value){
-                            if(falseFieldType.indexOf(employeeJoining[postEmployee][employeeField].type) == -1){
-                                postUnifyResult[employeeField] = {value: employeeJoining[postEmployee][employeeField].value};
-                            }
-                        }
+                    console.log(postUnifyResult)
+                    if(employeeJoining[postEmployee]){
+                        for(let employeeField in employeeJoining[postEmployee]){
+                          if(!postUnifyResult[employeeField] ||  !postUnifyResult[employeeField].value){
+                              if(falseFieldType.indexOf(employeeJoining[postEmployee][employeeField].type) == -1){
+                                  postUnifyResult[employeeField] = {value: employeeJoining[postEmployee][employeeField].value};
+                              }
+                          }
+                      }
                     }
                     postRecords.push(postUnifyResult);
                 }
@@ -584,12 +596,14 @@
                 let putUnifyResult;
                 for (let putEmployee of putEmployees) {
                     putUnifyResult = unifyFunc(targetRecords[putEmployee.num], COOP_FIELDS);
-                    for(let employField in employeeJoining[putEmployee]){
-                        if(!putUnifyResult[employField] || !putUnifyResult[employField].value){
-                            if(falseFieldType.indexOf(employeeJoining[putEmployee][employField].type) == -1){
-                                putUnifyResult[employField] = {value: employeeJoining[putEmployee][employField].value};
-                            }
-                        }
+                      if(employeeJoining[putEmployee]){
+                        for(let employField in employeeJoining[putEmployee]){
+                          if(!putUnifyResult[employField] || !putUnifyResult[employField].value){
+                              if(falseFieldType.indexOf(employeeJoining[putEmployee][employField].type) == -1){
+                                  putUnifyResult[employField] = {value: employeeJoining[putEmployee][employField].value};
+                              }
+                          }
+                      }
                     }
                     putRecords.push({
                         id: putEmployee.id,
@@ -609,6 +623,7 @@
                 let postPutRecord = {};
                 for (let targetApp in target) {
                     for (let postTarget of target[targetApp]) {
+                      
                         if (targetApp === 'deduction') {
                             for (let fieldS of COOP_FIELDS.salary) {
                                 if (postPutRecord[fieldS]) {
@@ -648,6 +663,7 @@
                         }
                     }
                 }
+                console.log(postPutRecord)
                 return postPutRecord;
             },
         },
@@ -685,6 +701,76 @@
 
             sessionStorage.setItem('yearMonthSelectionInfo', JSON.stringify(dataObj));
             return;
+        },
+        CONVERT_APP_COOP: {
+            //*一件の登録
+            DIVISON: async (record, convertField, appId, method, convertOBCRecordId) => {
+                //bodyの作成
+                const body = {
+                    app: appId,
+                    record: {},
+                };
+
+                //連携対象フィールド分ループ
+                convertField.forEach((field) => {
+                    body.record[field] = { value: record[field].value };
+                });
+
+                //アプリID・レコードIDの追加
+                body.record['起票元アプリID'] = { value: kintone.app.getId() };
+                body.record['起票元レコードID'] = { value: kintone.app.record.getId() };
+
+                try {
+                    if (method === 'POST') {
+                        const convertOBCResp = await kintone.api(kintone.api.url('/k/v1/record', true), method, body);
+                        return convertOBCResp.id;
+                    } else {
+                        body['id'] = convertOBCRecordId;
+                        await kintone.api(kintone.api.url('/k/v1/record', true), method, body);
+                        return convertOBCRecordId;
+                    }
+                } catch (e) {
+                    console.log(e.message);
+                }
+            },
+            //*一括登録
+            BULK: async ( appId, targetobjs, putFunc, postFunc) => {
+                const putRecords = [];
+                const postRecords = [];
+                
+                targetobjs.forEach((bulkConvertAry)=>{
+                  bulkConvertAry.forEach((dataObj) => {
+                    const record = dataObj.record;
+                    const method = dataObj.method;
+                    const id = dataObj.id;
+
+                    const recordInfo = {};
+                    Object.keys(record).forEach((field) => {
+                        recordInfo[field] = { value: record[field] };
+                    });
+                    recordInfo['起票元アプリID'] = { value: kintone.app.getId() };
+                    recordInfo['起票元レコードID'] = { value: record.$id };
+
+                    if (method === 'PUT') {
+                        putRecords.push({
+                            id: id,
+                            record: recordInfo,
+                        });
+                    } else {
+                        postRecords.push(recordInfo);
+                    }
+                });
+                  
+                });
+                try {
+                    //更新
+                    await putFunc(appId, putRecords);
+                    //新規作成
+                    await postFunc(appId, postRecords);
+                } catch (e) {
+                    console.log(e.message);
+                }
+            },
         },
     });
 })();

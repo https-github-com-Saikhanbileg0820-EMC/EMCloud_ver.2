@@ -1,3 +1,6 @@
+import { KintoneRestAPIClient } from '@kintone/rest-api-client';
+import Swal from 'sweetalert2';
+import $ from 'jquery';
 (() => {
     ("use strict");
 
@@ -17,7 +20,7 @@
         //実行日の入力を求めるアラートの表示
         return Swal.fire({
             title: "実行日の入力を行ってください",
-            html: `<input type="date" id="date_test" value="${record['変更日'].value}" style="border: inset; height: 50px; width: 175px; padding-right: 35px; padding-left:20px; text-align: center; font-size: 18px; border-radius: 10px; font-weight: bold;"></input>`,
+            html: `<input type="date" id="date_test" value="${record['実行日'].value}" style="border: inset; height: 50px; width: 175px; padding-right: 35px; padding-left:20px; text-align: center; font-size: 18px; border-radius: 10px; font-weight: bold;"></input>`,
             confirmButtonText: "確定",
             cancelButtonText: "中断",
             showCancelButton: true,
@@ -33,42 +36,25 @@
                 record.実行日.value = date;
                 let requestCategory = record.申請区分.value;
 
-                let attendant = await CONFIG.APPLICATION_CATEGORIES(requestCategory,CONFIG.APPID.employment,CONFIG.APPID.basicInfomation,CONFIG.APPID.commuteInfo,CONFIG.APPID.dependentExemption);
+                let attendant = await CONFIG.APPLICATION_CATEGORIES(requestCategory,CONFIG.APPID.employment,CONFIG.APPID.basicInfomation,CONFIG.APPID.commuteInfo,CONFIG.APPID.dependentExemption,CONFIG.APPID.employManagement);
                 
                 console.log(attendant);
 
                 let employRecords = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.employment, 'condition': `社員番号 = "${record['社員番号'].value}"`});
-
+                let employManagementRecords = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.employManagement,'orderBy':"$id desc", 'condition': `社員番号 = "${record['社員番号'].value}"`} );
+                console.log(employManagementRecords)
                 const COOP_FIELDS = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.corporationMaster,'condition': `該当申請 in ("${record['申請区分'].value}")`});
                 let employeeRequestBody = [];
                 for(let attend of attendant){
                     if(attend == CONFIG.APPID.employment){
                         employeeRequestBody.push(await CONFIG.UPDATE_EMPLOYEE_BODY(record,COOP_FIELDS,attend));
+                    }else if(attend == CONFIG.APPID.employManagement){
+                        employeeRequestBody.push(await CONFIG.HISTORY_EMPLOYEE_BODY(record,COOP_FIELDS,attend,employManagementRecords[0]))
                     }else{
                         employeeRequestBody.push(await CONFIG.HISTORY_EMPLOYEE_BODY(record,COOP_FIELDS,attend,employRecords[0]));
                     }
                     
                 }
-                console.log(employeeRequestBody);
-                let managementRequest = {};
-                const EMPLOY_MANAGEMENT = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.corporationMaster,'condition': `該当申請 in ("人事部入力")`});
-                console.log(EMPLOY_MANAGEMENT);
-                managementRequest['社員番号'] = {value: record['社員番号'].value};
-                for(let employManagement of EMPLOY_MANAGEMENT){
-                    if(record[employManagement['EMCloudフィールドコード'].value].value){
-                        managementRequest[employManagement['EMCloudフィールドコード'].value] = {value: record[employManagement['EMCloudフィールドコード'].value].value};
-                    }else if(employRecords[0][employManagement['EMCloudフィールドコード'].value]){
-                        managementRequest[employManagement['EMCloudフィールドコード'].value] = {value: employRecords[0][employManagement['EMCloudフィールドコード'].value].value};
-                    }
-                }
-                employeeRequestBody.push({
-                    method: "POST",
-                    api: "/k/v1/record.json",
-                    payload: {
-                        app: CONFIG.APPID.employManagement,
-                        record: managementRequest
-                    }
-                });
                 console.log(employeeRequestBody);
 
                 await CONFIG.BULKREQUEST({requests: employeeRequestBody});
@@ -88,8 +74,6 @@
           $(".gaia-argoui-app-menu-edit").hide()
             return false;
         }
-        const record = event.record;
-        record.実行日.disabled = true;
         return event;
     });
 
