@@ -14,7 +14,7 @@ kintone.events.on(["app.record.index.show"], (event) => {
     };
 
     for (let i = 0; i < recNum; i++) {
-    if(records[i].社員番号.value != ""){
+    if(records[i].社員番号.value === ""){
         recs = records[i].$id.value;
         body.records.push(
             {
