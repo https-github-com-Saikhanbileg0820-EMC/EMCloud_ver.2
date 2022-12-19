@@ -318,7 +318,8 @@ jQuery.noConflict();
     };
     kintone.events.on('app.record.detail.process.proceed', async (event) => {
         const nextStatus = event.nextStatus.value;
-        event.record.ステータス_連携.value = nextStatus
+        if(event.record.ステータス_連携){
+        event.record.ステータス_連携.value = nextStatus}
         switch(nextStatus){
           case '契約締結':
             await NewAgreement();

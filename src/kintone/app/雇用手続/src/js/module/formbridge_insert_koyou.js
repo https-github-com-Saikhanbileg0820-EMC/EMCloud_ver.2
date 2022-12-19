@@ -14,7 +14,8 @@
         };
 
         for (let i = 0; i < recNum; i++) {
-        if(records[i].社員番号.value === ""){
+        if(records[i].formbridgeフラグ.value === "編集データ有り"){
+            sessionStorage.setItem('reload', 'no');
             recs = records[i].$id.value;
             body.records.push(
                 {
@@ -38,6 +39,10 @@
                         },
                         '災害者区分': {
                           'value': records[i].災害者区分_sub.value,
+                          lookup: true
+                        },
+                        '国内外区分': {
+                          'value': records[i].国内外区分_sub.value,
                           lookup: true
                         },
                         '居住者区分': {
@@ -104,8 +109,8 @@
                           'value': records[i].子_続柄_sub.value,
                           lookup: true
                         },
-                        'ステータス_連携': {
-                          'value': records[i].ステータス.value
+                        'formbridgeフラグ': {
+                          'value': "",
                         },
                     },
                 }
@@ -116,8 +121,8 @@
         return kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', body, function (resp) {
             // success
             console.log(resp);
-            if(window.sessionStorage.getItem(['reload']) != "ok2"){
-              sessionStorage.setItem('reload', 'ok2');
+            if(window.sessionStorage.getItem(['reload']) != "ok"){
+              sessionStorage.setItem('reload', 'ok');
               location.reload();
             }
         }, function (error) {
@@ -126,7 +131,7 @@
             console.log(error);
         });
     });
-     kintone.events.on('app.record.detail.process.proceed', (event) => {
+     kintone.events.on('app.record.create.submit', (event) => {
          let record = event.record;
          record.社員番号_sub.value = record.社員番号.value
          record.契約区分_sub.value = record.契約区分.value
@@ -150,15 +155,14 @@
          record.支給区分_賞振2_sub.value = record.支給区分_賞振2.value
          record.預金種目_賞振2_sub.value = record.預金種目_賞振2.value
          record.子_続柄_sub.value = record.子_続柄.value
-         record.ステータス_連携.value = record.ステータス.value
+         record.formbridgeフラグ.value = ""
          return event;
      });
      
      //社員番号をルックアップで取得したら社員番号subにコピー
      kintone.events.on('app.record.edit.submit', (event) => {
          let record = event.record;
-         
-         if(!record.社員番号_sub.value){
+         if(record.社員番号_sub){
          record.社員番号_sub.value = record.社員番号.value
          record.契約区分_sub.value = record.契約区分.value
          record.国内外区分_sub.value = record.国内外区分.value
@@ -181,11 +185,9 @@
          record.支給区分_賞振2_sub.value = record.支給区分_賞振2.value
          record.預金種目_賞振2_sub.value = record.預金種目_賞振2.value
          record.子_続柄_sub.value = record.子_続柄.value
-         record.ステータス_連携.value = record.ステータス.value
-         
-         return event;
+         record.formbridgeフラグ.value = ""
          }
+         return event;
      });
      
 })();
-

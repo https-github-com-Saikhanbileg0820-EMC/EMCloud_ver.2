@@ -1,7 +1,7 @@
 import $ from 'jquery';
 (function() {
   'use strict';
-  const SubtableCode = "6357998"
+  const SubtableCode = "6358727"
   const SubtableName = "t_家族"
   kintone.events.on(['app.record.detail.show','app.record.create.show','app.record.edit.show',`app.record.edit.change.${SubtableName}`, `app.record.create.change.${SubtableName}`,'app.record.edit.change.申請区分','app.record.create.change.申請区分','app.record.edit.change.氏名_ヘッダー','app.record.create.change.氏名_ヘッダー'],async  function(event) {
     await Remove(SubtableCode);

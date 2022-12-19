@@ -12,6 +12,6 @@ import './module/undeletable.js';
 import './module/CheckCopy.js';
 import './module/familyBasic.js';
 import './module/FamilyChecker.js';
-import './module/formbridge_insert (6).js';
 import './module/subtable_split.js';
+import './module/formbridge_insert';
 import './module/age';

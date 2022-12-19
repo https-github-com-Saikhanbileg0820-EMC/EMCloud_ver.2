@@ -30,6 +30,7 @@ import { KintoneRestAPIClient } from '@kintone/rest-api-client';
         let selfRecord = await client.record.getRecord({ app: kintone.app.getId(), id: kintone.app.record.getId() });
         console.log(selfRecord);
         for (let field of fields) {
+            if(!selfRecord.record[field])continue;
           if (selfRecord.record[field].value) {
             paramObj[field] = { value: selfRecord.record[field].value };
           }
