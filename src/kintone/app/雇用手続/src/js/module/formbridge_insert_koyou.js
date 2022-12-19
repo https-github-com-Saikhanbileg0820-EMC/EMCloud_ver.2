@@ -104,7 +104,7 @@
                           'value': records[i].子_続柄_sub.value,
                           lookup: true
                         },
-                        'ステータス00': {
+                        'ステータス_連携': {
                           'value': records[i].ステータス.value
                         },
                     },

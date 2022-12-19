@@ -88,6 +88,7 @@ const requist= [
     kintone.events.on(['app.record.create.change.雇用手続区分','app.record.create.show','app.record.detail.show','app.record.edit.show'], (event) => {
         const record = event.record;
         const notExistsFields = [];
+        kintone.app.record.setFieldShown('レコード番号', false);
         if(record.雇用手続区分.value==="契約更改"){
           requist.forEach((field)=>{
             if (record[field]) {
