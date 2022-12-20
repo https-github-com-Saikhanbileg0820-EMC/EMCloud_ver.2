@@ -2,6 +2,7 @@ import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 import { Spinner } from 'spin.js';
 import { TextEncoder } from './encoding.js';
 import Swal from 'sweetalert2';
+import jQuery from 'jquery';
 
 (($) => {
     window.EMC = window.EMC || {};

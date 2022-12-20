@@ -28,7 +28,8 @@ import { KintoneRestAPIClient } from '@kintone/rest-api-client';
   });
   kintone.events.on(['app.record.create.submit','app.record.edit.submit'], function(event) {
     const setRecord = event.record;
-    if(setRecord["申請区分"].value!=="家族情報"||setRecord["申請区分"].value!=="入社手続"){
+    if(setRecord["申請区分"].value!=="家族情報"){
+      if(setRecord["申請区分"].value==="入社手続"){return event}
        setRecord["死亡年月日_配偶者"].value = ""
        setRecord["健保扶養区分_配偶者"].value = ""
        setRecord["障害者区分_配偶者"].value = ""
@@ -51,8 +52,9 @@ import { KintoneRestAPIClient } from '@kintone/rest-api-client';
       
     });
     
-      return event;
     }
-     
+    
+    
+    return event; 
   });
 })();

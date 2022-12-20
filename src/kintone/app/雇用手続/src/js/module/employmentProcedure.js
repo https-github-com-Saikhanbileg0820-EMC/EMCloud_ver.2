@@ -1,5 +1,5 @@
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
-import $ from 'jquery';
+import jQuery from 'jquery';
 import JSZip from 'jszip';
 (function($) {
     ("use strict");

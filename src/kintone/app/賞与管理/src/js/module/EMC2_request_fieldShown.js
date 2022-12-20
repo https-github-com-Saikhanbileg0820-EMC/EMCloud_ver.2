@@ -1,5 +1,6 @@
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 import swal from 'sweetalert2';
+import $ from 'jquery';
 (function(){
   'use strict';
 

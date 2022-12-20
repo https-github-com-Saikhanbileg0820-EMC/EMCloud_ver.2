@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import jQuery from 'jquery';
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 import { Spinner } from 'spin.js';
 import { TextEncoder } from './encoding.js';
