@@ -92,8 +92,8 @@ import JSZip from 'jszip';
         const employmentProcedureForm = await kintone.api(kintone.api.url("/k/v1/app/form/fields.json", true), "GET", { app: kintone.app.getId() });
         const convertOBCForm = await kintone.api(kintone.api.url("/k/v1/app/form/fields.json", true), "GET", { app: EMC.APPID.convertOBCItem });
         let convertField = [];
-        for (keyEmp of Object.keys(employmentProcedureForm.properties)) {
-            for (keyConv of Object.keys(convertOBCForm.properties)) {
+        for (let keyEmp of Object.keys(employmentProcedureForm.properties)) {
+            for (let keyConv of Object.keys(convertOBCForm.properties)) {
                 if (keyEmp === keyConv) {
                     convertField.push(keyEmp);
                     break;

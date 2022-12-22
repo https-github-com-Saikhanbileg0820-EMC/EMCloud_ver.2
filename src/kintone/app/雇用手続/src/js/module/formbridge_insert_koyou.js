@@ -25,6 +25,10 @@
                             value: records[i].社員番号_sub.value,
                             lookup: true
                         },
+                        '契約区分': {
+                          'value': records[i].契約区分_sub.value,
+                          lookup: true
+                        },
                         '寡婦_ひとり親区分': {
                           'value': records[i].寡婦_ひとり親区分_sub.value,
                           lookup: true
@@ -105,6 +109,10 @@
                           'value': records[i].休職事由_sub.value,
                           lookup: true
                         },
+                        '採用経路': {
+                          'value': records[i].採用経路_sub.value,
+                          lookup: true
+                        },
                         '子_続柄': {
                           'value': records[i].子_続柄_sub.value,
                           lookup: true
@@ -154,6 +162,7 @@
          record.預金種目_賞振1_sub.value = record.預金種目_賞振1.value
          record.支給区分_賞振2_sub.value = record.支給区分_賞振2.value
          record.預金種目_賞振2_sub.value = record.預金種目_賞振2.value
+         record.採用経路_sub.value = record.採用経路.value
          record.子_続柄_sub.value = record.子_続柄.value
          record.formbridgeフラグ.value = ""
          return event;
@@ -162,7 +171,7 @@
      //社員番号をルックアップで取得したら社員番号subにコピー
      kintone.events.on('app.record.edit.submit', (event) => {
          let record = event.record;
-         if(record.社員番号_sub){
+         
          record.社員番号_sub.value = record.社員番号.value
          record.契約区分_sub.value = record.契約区分.value
          record.国内外区分_sub.value = record.国内外区分.value
@@ -184,9 +193,10 @@
          record.預金種目_賞振1_sub.value = record.預金種目_賞振1.value
          record.支給区分_賞振2_sub.value = record.支給区分_賞振2.value
          record.預金種目_賞振2_sub.value = record.預金種目_賞振2.value
+         record.採用経路_sub.value = record.採用経路.value
          record.子_続柄_sub.value = record.子_続柄.value
          record.formbridgeフラグ.value = ""
-         }
+         
          return event;
      });
      

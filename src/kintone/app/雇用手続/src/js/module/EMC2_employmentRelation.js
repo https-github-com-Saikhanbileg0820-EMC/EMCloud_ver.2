@@ -45,7 +45,6 @@ jQuery.noConflict();
         if(action ==="承認済"){
           param.record['申請区分']={value: selfRecords.record["雇用手続区分"].value}
         }
-        console.log(param)
         return param;
     };
 
@@ -124,11 +123,12 @@ jQuery.noConflict();
             record[`${key}`]={value : Employfield[0][`${key}`].value}
           }
         })
-        console.log(record)
         // リクエストパラメーターを作成
         let relationParamEmploy = await createRelationParam(relationFieldEmploy,EMC.APPID.employManagement,'');
         let relationParamProdure = await createRelationParam(relationFieldProdure,EMC.APPID.procedureManagement,'承認済');
         let relationParamSalary = await createRelationParam(relationFieldSalary,EMC.APPID.salaryManagement,'承認済');
+        let pack = await client.record.getAllRecords({ app: EMC.APPID.environmentMaster, condition: `マスタ区分 in ("ライセンス情報")` });
+        let packName= pack[0].契約パック.value
         Object.keys(relationParamEmploy.record).forEach((key)=>{
           if(!relationParamEmploy.record[`${key}`].value){
             if(record[`${key}`])
@@ -139,9 +139,12 @@ jQuery.noConflict();
         try {
             let addRespemploy = await client.record.addRecord(relationParamEmploy);
             let addRespprodure = await client.record.addRecord(relationParamProdure);
-            let addRespsalary = await client.record.addRecord(relationParamSalary);
+            if(packName!=="雇用パック"){
+                let addRespsalary = await client.record.addRecord(relationParamSalary);
+                idS = addRespsalary.id;
+            }
             idP = addRespprodure.id;
-            idS = addRespsalary.id;
+            
             
             
         } catch (error) {
@@ -152,7 +155,8 @@ jQuery.noConflict();
         try{
             // 給与管理、手続管理に承認
             let procedureManagement =await client.record.updateRecordStatus({app:EMC.APPID.procedureManagement,action:"承認",id:idP});;
-            let salaryManagement = await client.record.updateRecordStatus({app:EMC.APPID.salaryManagement,action:"承認",id:idS});
+            if(packName!=="雇用パック"){
+            let salaryManagement = await client.record.updateRecordStatus({app:EMC.APPID.salaryManagement,action:"承認",id:idS});}
             
         } catch (error) {
             console.log(error);
@@ -395,7 +399,6 @@ jQuery.noConflict();
         try {
             // 社員情報へ連携（レコード作成）
             const bulkResp = await client.bulkRequest(bulkParams);
-            console.log(bulkResp);
         } catch (error) {
             console.log(error);
             doSweetAlert('error', 'エラー', '社員情報の連携に失敗しました<br>手続内容を確認してください', false, '');

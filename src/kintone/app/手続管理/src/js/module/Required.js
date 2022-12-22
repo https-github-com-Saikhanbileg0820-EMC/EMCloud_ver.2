@@ -2,6 +2,7 @@
   'use strict';
   kintone.events.on(['app.record.create.submit','app.record.edit.submit'], function(event) {
     let record = event.record
+    !record["社員番号"].value ?  record["社員番号"].error="必須項目です。" :"";
     let value = event.record.申請区分.value
     switch(value){
       case "休職（産休育休）":

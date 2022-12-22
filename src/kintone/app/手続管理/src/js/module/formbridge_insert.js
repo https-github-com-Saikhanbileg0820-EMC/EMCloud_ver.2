@@ -102,6 +102,10 @@ kintone.events.on(["app.record.index.show"], (event) => {
                       'value': records[i].子_続柄_sub.value,
                       lookup: true
                     },
+                    '休職事由': {
+                      'value': records[i].休職事由_sub.value,
+                      lookup: true
+                    },
                     'formbridgeフラグ': {
                       'value': "",
                     },
@@ -128,7 +132,6 @@ kintone.events.on(["app.record.index.show"], (event) => {
      
      kintone.events.on('app.record.create.submit', (event) => {
          let record = event.record;
-         if(record.社員番号_sub){
          record.社員番号_sub.value = record.社員番号.value
          record.寡婦_ひとり親区分_sub.value = record.寡婦_ひとり親区分.value
          record.外国人区分_sub.value = record.外国人区分.value
@@ -158,14 +161,14 @@ kintone.events.on(["app.record.index.show"], (event) => {
          record.休職事由_sub.value = record.休職事由.value
          record.子_続柄_sub.value = record.子_続柄.value
          record.formbridgeフラグ.value = ""
-         }
+         
          return event;
      });
      
      //社員番号をルックアップで取得したら社員番号subにコピー
      kintone.events.on('app.record.edit.submit', (event) => {
          let record = event.record;
-         if(record.社員番号_sub){
+         
          record.社員番号_sub.value = record.社員番号.value
          record.寡婦_ひとり親区分_sub.value = record.寡婦_ひとり親区分.value
          record.外国人区分_sub.value = record.外国人区分.value
@@ -195,7 +198,7 @@ kintone.events.on(["app.record.index.show"], (event) => {
          record.休職事由_sub.value = record.休職事由.value
          record.子_続柄_sub.value = record.子_続柄.value
          record.formbridgeフラグ.value = ""
-         }
+         
          return event;
      });
      

@@ -377,7 +377,7 @@ import $ from 'jquery';
 
         //?ZIPファイルの出力
         DOWNLOAD_ZIP: async (zip, year, month) => {
-            let encoder = new TextEncoder('shift_jis', { NONSTANDARD_allowLegacyEncoding: true });
+            const encoder = new TextEncoder('shift_jis', { NONSTANDARD_allowLegacyEncoding: true });
             const blob = await zip.generateAsync({ type: 'blob', encodeFileName: (fileName) => encoder.encode(fileName) });
             if (window.navigator.msSaveBlob) {
                 window.navigator.msSaveBlob(blob);
