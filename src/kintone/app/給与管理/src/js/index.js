@@ -7,6 +7,7 @@ import './module/basicInfo';
 import './module/hidden';
 import './module/fieldchange_02';
 import './module/undeletable';
+import './module/Tax';
 
 (function () {
     //ライセンスキーチェック

@@ -16,3 +16,4 @@ import './module/CheckCopy.js';
 import './module/FamilyChecker.js';
 import './module/formbridge_insert_koyou.js';
 import './module/subtable_split';
+import './module/Tax';

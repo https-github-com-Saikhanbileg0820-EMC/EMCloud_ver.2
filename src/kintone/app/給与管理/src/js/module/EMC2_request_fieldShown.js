@@ -1,9 +1,11 @@
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
+import swal from 'sweetalert2';
+import $ from 'jquery';
 (function(){
   'use strict';
 
   const client = new KintoneRestAPIClient();
-
+  const CONFIG = window.EMC;
   const getTargetRecords = async (query) => {
     let targetBody = {
       app: kintone.app.getId(),
@@ -120,6 +122,104 @@ import { KintoneRestAPIClient } from '@kintone/rest-api-client';
                   let queryParamter = sortQuery?`${sortQuery} and ステータス not in ("${lastStatus.name}")`:`ステータス not in ("${lastStatus.name}")`;
                   const targetsRecords = await getTargetRecords(queryParamter);
                   console.log(targetsRecords);
+                  // ===========================================
+
+                  const SELF_FIELDS = await kintone.api(kintone.api.url('/k/v1/form.json',true),'GET',{app:kintone.app.getId()});
+                  let coopOptions;
+                  for(let selfField of SELF_FIELDS.properties){
+                    if(selfField.code == '申請区分'){
+                      for(let option of selfField.options){
+                        coopOptions? coopOptions += `,"${option}"`: coopOptions = `"${option}"`;
+                      }
+                    }
+                  }
+                  const COOP_FIELDS = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.corporationMaster,'condition': `該当申請 in (${coopOptions})`});
+
+                  let applicationsFields = {};
+                  for(let coop of COOP_FIELDS){
+                    for(let currentApplication of coop['該当申請'].value){
+                      if(applicationsFields[currentApplication]){
+                        applicationsFields[currentApplication].push(coop['EMCloudフィールドコード'].value)
+                      }else{
+                        applicationsFields[currentApplication] = [coop['EMCloudフィールドコード'].value];
+                      }
+                    }
+                  }
+
+                  let perApplication = {};
+                  for(let targetRecrod of targetsRecords){
+                    if(perApplication[targetRecrod['申請区分'].value]){
+                      perApplication[targetRecrod['申請区分'].value].push(targetRecrod);
+                    }else{
+                      perApplication[targetRecrod['申請区分'].value] = [targetRecrod]
+                    }
+                  }
+
+                  let requests = [];
+                  for(let Application in perApplication){
+                    let postRecordArray = [];
+                    for(let perApplicationRecord of perApplication[Application]){
+                      let employManagementRecords = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.employManagement,'orderBy':"$id desc", 'condition': `社員番号 = "${perApplicationRecord['社員番号'].value}"`} );
+                      let postRecordObj = {};
+                      for(let perApplicationFields of applicationsFields[Application]){
+                          if(!perApplicationRecord.hasOwnProperty(perApplicationFields)){
+                            if(employManagementRecords[0]===undefined){continue}
+                              if(employManagementRecords[0].hasOwnProperty(perApplicationFields)){
+                                postRecordObj[perApplicationFields] = {"value": employManagementRecords[0][perApplicationFields].value}
+                            }
+                            continue;
+                          }
+                          postRecordObj[perApplicationFields] = {"value": perApplicationRecord[perApplicationFields].value}
+                      }
+                      switch(Application){
+                        case '入社手続':
+                        case '契約更改':
+                        case '給与改定':
+                        case 'その他':
+                          postRecordObj['実行日'] = {"value": selectDate}
+                          break;
+                       default:
+                        break;
+                      }
+                      postRecordArray.push(postRecordObj);
+                    }
+                    let coopId = false;
+                    switch(Application){
+                      case '入社手続':
+                      case '契約更改':
+                      case '給与改定':
+                      case 'その他':
+                        coopId = [CONFIG.APPID.employManagement]
+                        break;
+                     default:
+                      break;
+                    }
+                    if(coopId){
+                      coopId.forEach((appid)=>{
+                      requests.push({
+                        method:"POST",
+                        api: "/k/v1/records.json",
+                        payload:{
+                          app: appid,
+                          records: postRecordArray
+                        }
+                      })
+                    })
+                    }
+                  }
+                  console.log(requests);
+
+                  try{
+                    let bulkResp = await CONFIG.BULKREQUEST({requests:requests});
+                    console.log(bulkResp);
+                  }catch(error){
+                    console.log(error);
+                    return false;
+                  }
+
+
+
+                  // ===========================================
 
                   if(targetsRecords.length){
                     // ・ステータスの更新（承認済）// ・レコードの更新（実行日）

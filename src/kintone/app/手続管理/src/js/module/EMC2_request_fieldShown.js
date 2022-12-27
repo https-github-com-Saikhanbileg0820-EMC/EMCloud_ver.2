@@ -1,5 +1,6 @@
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 import swal from 'sweetalert2';
+import $ from 'jquery';
 (function(){
   'use strict';
 
@@ -245,7 +246,7 @@ import swal from 'sweetalert2';
                   console.log(perEmployee);
 
 
-                  let coopOptions;;
+                  let coopOptions;
                   for(let selfField of SELF_FIELDS.properties){
                     if(selfField.code == '申請区分'){
                       for(let option of selfField.options){
@@ -287,11 +288,58 @@ import swal from 'sweetalert2';
                   for(let Application in perApplication){
                     let postRecordArray = [];
                     for(let perApplicationRecord of perApplication[Application]){
+                      let employManagementRecords = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.employManagement,'orderBy':"$id desc", 'condition': `社員番号 = "${perApplicationRecord['社員番号'].value}"`} );
                       let postRecordObj = {};
-                      console.log(perApplicationRecord)
                       for(let perApplicationFields of applicationsFields[Application]){
-                        if(!perApplicationRecord[perApplicationFields]||!perApplicationRecord[perApplicationFields].value)continue;
+                          if(!perApplicationRecord.hasOwnProperty(perApplicationFields)){
+                            if(Application==='入社手続'||Application==='契約更改'){
+                              if(employManagementRecords[0]===undefined){continue}
+                              if(employManagementRecords[0].hasOwnProperty(perApplicationFields)){
+                                postRecordObj[perApplicationFields] = {"value": employManagementRecords[0][perApplicationFields].value}
+                              }
+                            }
+                            continue;
+                          }
                           postRecordObj[perApplicationFields] = {"value": perApplicationRecord[perApplicationFields].value}
+                      }
+                      switch(Application){
+                        case '基本情報':
+                          postRecordObj['変更日'] = {"value": selectDate}
+                          postRecordObj['基本情報変更日'] = {"value": selectDate}
+                          break;
+                        case '口座情報':
+                          postRecordObj['変更日'] = {"value": selectDate}
+                          postRecordObj['口座情報変更日'] = {"value": selectDate}
+                          break;
+                        case '住所変更':
+                          postRecordObj['変更日'] = {"value": selectDate}
+                          postRecordObj['住所情報変更日'] = {"value": selectDate}
+                          break;
+                        case '家族情報':
+                          postRecordObj['変更日'] = {"value": selectDate}
+                          postRecordObj['家族情報変更日'] = {"value": selectDate}
+                          break;
+                        case '通勤情報':
+                          postRecordObj['変更日'] = {"value": selectDate}
+                          postRecordObj['通勤情報変更日'] = {"value": selectDate}
+                          break;
+                        case '入社手続':
+                          postRecordObj['実行日'] = {"value": selectDate}
+                          postRecordObj['変更日'] = {"value": selectDate}
+                          postRecordObj['基本情報変更日'] = {"value": selectDate}
+                          postRecordObj['口座情報変更日'] = {"value": selectDate}
+                          postRecordObj['住所情報変更日'] = {"value": selectDate}
+                          postRecordObj['家族情報変更日'] = {"value": selectDate}
+                          postRecordObj['通勤情報変更日'] = {"value": selectDate}
+                          break;
+                        case '契約更改':
+                          postRecordObj['実行日'] = {"value": selectDate}
+                          postRecordObj['変更日'] = {"value": selectDate}
+                          postRecordObj['通勤情報変更日'] = {"value": selectDate}
+                          postRecordObj['住所情報変更日'] = {"value": selectDate}
+                          break;
+                       default:
+                        break;
                       }
                       postRecordArray.push(postRecordObj);
                     }
@@ -300,26 +348,34 @@ import swal from 'sweetalert2';
                       case '基本情報':
                       case '口座情報':
                       case '住所変更':
-                        coopId = CONFIG.APPID.basicInfomation
+                        coopId = [CONFIG.APPID.basicInfomation]
                         break;
                       case '家族情報':
-                        coopId = CONFIG.APPID.dependentExemption
+                        coopId = [CONFIG.APPID.dependentExemption]
                         break;
                       case '通勤情報':
-                        coopId = CONFIG.APPID.commuteInfo
+                        coopId = [CONFIG.APPID.commuteInfo]
+                        break;
+                      case '入社手続':
+                        coopId = [CONFIG.APPID.basicInfomation,CONFIG.APPID.dependentExemption,CONFIG.APPID.commuteInfo,CONFIG.APPID.employManagement]
+                        break;
+                      case '契約更改':
+                        coopId = [CONFIG.APPID.commuteInfo,CONFIG.APPID.basicInfomation,CONFIG.APPID.employManagement]
                         break;
                      default:
                       break;
                     }
                     if(coopId){
+                      coopId.forEach((appid)=>{
                       requests.push({
                         method:"POST",
                         api: "/k/v1/records.json",
                         payload:{
-                          app: coopId,
+                          app: appid,
                           records: postRecordArray
                         }
                       })
+                    })
                     }
                     if(await CONFIG.APPLICATIONS_CATEGORIES(Application)){
                       employmentPutRequests = employmentPutRequests.concat(postRecordArray);
@@ -327,10 +383,7 @@ import swal from 'sweetalert2';
                   }
                   console.log(requests);
 
-
-                  const EMP_MANAGEMENT = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.corporationMaster,'condition': `該当申請 in ("人事部入力")`});
                   requests = requests.concat(await CONFIG.CREATE_BULK_EMPLOYEE_BODY(employmentPutRequests,perEmployee,CONFIG.APPID.employment));
-                  requests = requests.concat(await CONFIG.CREATE_BULK_EMPLOYMANAGEMENT_BODY(targetsRecords,EMP_MANAGEMENT,CONFIG.APPID.employManagement))
 
                   console.log(requests);
 
