@@ -37,7 +37,7 @@ import $ from 'jquery';
                 let attendant = await CONFIG.APPLICATION_CATEGORIES(requestCategory,CONFIG.APPID.employment,CONFIG.APPID.basicInfomation,CONFIG.APPID.commuteInfo,CONFIG.APPID.dependentExemption,CONFIG.APPID.employManagement);
                 
                 console.log(attendant);
-                let employManagementRecords = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.employManagement,'orderBy':"$id desc", 'condition': `社員番号 = "${record['社員番号'].value}"`} );
+                let employManagementRecords = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.employManagement,'orderBy':"実行日 desc, $id desc", 'condition': `社員番号 = "${record['社員番号'].value}" and 実行日 <= "${record['実行日'].value}"`} );
                 console.log(employManagementRecords)
                 const COOP_FIELDS = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.corporationMaster,'condition': `該当申請 in ("${record['申請区分'].value}")`});
                 let employeeRequestBody = [];

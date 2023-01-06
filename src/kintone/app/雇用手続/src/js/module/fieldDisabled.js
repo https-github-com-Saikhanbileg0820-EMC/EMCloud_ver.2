@@ -2,7 +2,6 @@
     'use strict';
 const requist= [
   "契約区分",
-"入社年月日",
 "入社区分",
 "応募職種",
 "電話番号1",
@@ -93,6 +92,14 @@ const requist= [
           requist.forEach((field)=>{
             if (record[field]) {
               kintone.app.record.setFieldShown(field, false);
+            } else {
+                notExistsFields.push(field);
+            }
+          })
+        }else{
+          requist.forEach((field)=>{
+            if (record[field]) {
+              kintone.app.record.setFieldShown(field, true);
             } else {
                 notExistsFields.push(field);
             }

@@ -116,7 +116,7 @@ jQuery.noConflict();
         let relationFieldProdure = await getRelationFields('"雇用手続⑤"');//  手続管理
         let relationFieldSalary = await getRelationFields('"雇用手続⑥"');//  給与管理
         let selfRecord = await client.record.getRecord({ app: kintone.app.getId(), id: kintone.app.record.getId() });
-        let Employfield = await client.record.getAllRecords({app:EMC.APPID.employManagement,condition:`社員番号="${selfRecord.record["社員番号"].value}"`,orderBy:"$id desc"})
+        let Employfield = await client.record.getAllRecords({app:EMC.APPID.employManagement,condition:`社員番号="${selfRecord.record["社員番号"].value}" and 実行日 <= "${selfRecord.record["実行日"].value}"`,orderBy:"実行日 desc, $id desc"})
         let record = {}
         Object.keys(Employfield[0]).forEach((key)=>{
           if(skipFieldType.indexOf(Employfield[0][`${key}`].type) === -1){

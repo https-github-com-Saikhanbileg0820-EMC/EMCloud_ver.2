@@ -3,7 +3,7 @@ import { KintoneRestAPIClient } from '@kintone/rest-api-client';
   'use strict';
   const skipFieldType = ['CATEGORY','CREATED_TIME','CREATOR','MODIFIER','RECORD_NUMBER','STATUS','STATUS_ASSIGNEE','UPDATED_TIME'];
 
-     const events = ['app.record.create.change.氏名', 'app.record.edit.change.氏名'];
+     const events = ['app.record.create.change.実行日', 'app.record.edit.change.実行日'];
      
      
   kintone.events.on(events, function(event) {
@@ -39,10 +39,8 @@ import { KintoneRestAPIClient } from '@kintone/rest-api-client';
     //社員情報から取得　
      const putFields = async()=>{
        let arr =await getter();
-       console.log({'app':APP_ID.employManagement,'query': `社員番号 = "${event.record.社員番号.value}" order by 作成日時 desc`})
-       let employee= await client.record.getRecords({'app':APP_ID.employManagement,'query': `社員番号 = "${event.record.社員番号.value}" order by 作成日時 desc`})
+       let employee= await client.record.getRecords({'app':APP_ID.employManagement,'query': `社員番号 = "${event.record.社員番号.value}" and 実行日<="${event.record.実行日.value}" order by 実行日 desc, $id desc`})
        const setRecord = kintone.app.record.get();
-       console.log(employee)
        for(let i of arr){
          setRecord.record[i].value = employee.records[0][i].value; 
        }

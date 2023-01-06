@@ -152,10 +152,8 @@ import { DateTime } from 'luxon'
     });
 
     //*============================== ルックアップの制御処理 ==============================
-    const cevents = ['app.record.create.change.雇用区分コピー', 'app.record.edit.change.雇用区分コピー', 'app.record.create.change.性別コピー', 'app.record.edit.change.性別コピー','app.record.edit.show','app.record.detail.show'];
-    kintone.events.on(cevents, (event) => {
+    kintone.events.on('app.record.create.change.氏名', (event) => {
         const record = event.record;
-
         //社員番号がクリアされた場合は対象フィールド全クリア
         if (!record.社員番号.value) {
             record.雇用区分.value = '';
@@ -164,21 +162,44 @@ import { DateTime } from 'luxon'
             record.性別_奉行.value = '';
             record.締日選択.value = '';
             record.給与締日.value = '';
-
             return event;
+        }
+    });
+    const cevents = ['app.record.create.change.実行日'];
+    kintone.events.on(cevents, async (event) => {
+        const record = event.record;
+        let date = record.実行日.value
+        if(date===undefined){
+            record.実行日.error="実行日入力してください。"
+            return event
+        }
+        let floatingDataInfo = await EMC.RESTAPI.GET_RECORDS(EMC.APPID.employManagement, `社員番号="${record.社員番号.value}" and 実行日<="${date}"`, `実行日 desc, $id desc`);
+        //社員番号がクリアされた場合は対象フィールド全クリア
+        if (!record.社員番号.value) {
+            record.雇用区分.value = '';
+            record.性別.value = '';
+            record.雇用区分_奉行.value = '';
+            record.性別_奉行.value = '';
+            record.締日選択.value = '';
+            record.給与締日.value = '';
         }
 
         //社員番号のルックアップのコピー先のフィールド情報を各ルックアップフィールドに反映
-        record.雇用区分.value = record.雇用区分コピー.value;
-        record.性別.value = record.性別コピー.value;
-
-        //ルックアップ実行
-        record.雇用区分.lookup = true;
-        record.性別.lookup = true;
-
-        return event;
-    });
-
+        let a=record.雇用区分コピー.value
+        if(floatingDataInfo[0]){
+            a=floatingDataInfo[0].雇用区分.value
+        }
+        let b = record.性別コピー.value
+         putFields(a,b)
+    });   
+    const putFields = async(value,sex)=>{
+        const setRecord = kintone.app.record.get();
+        setRecord.record["性別"].value = sex;
+        setRecord.record["性別"].lookup = true;
+        setRecord.record["雇用区分"].value = value
+        setRecord.record["雇用区分"].lookup = true;
+        kintone.app.record.set(setRecord);
+       }
     const cevents2 = ['app.record.create.change.雇用区分_奉行', 'app.record.edit.change.雇用区分_奉行', 'app.record.create.change.性別_奉行', 'app.record.edit.change.性別_奉行'];
     kintone.events.on(cevents2, (event) => {
         const record = event.record;
@@ -189,7 +210,6 @@ import { DateTime } from 'luxon'
 
         return event;
     });
-
     //*============================== 入力制御処理 ==============================
     const changeEvents = ['app.record.create.change.締日選択', 'app.record.create.change.給与締日', 'app.record.create.change.実行日', 'app.record.edit.change.締日選択', 'app.record.edit.change.給与締日', 'app.record.edit.change.実行日'];
     kintone.events.on(changeEvents, (event) => {

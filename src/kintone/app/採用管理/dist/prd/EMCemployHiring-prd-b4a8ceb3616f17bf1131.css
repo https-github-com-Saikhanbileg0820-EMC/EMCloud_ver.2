@@ -1,0 +1,460 @@
+@charset "UTF-8";
+/* 
+ * Copyright © 2020 エムザス株式会社 All rights reserved.
+ */
+
+/*バージョンを戻す　削除*/
+ .gaia-argoui-app-show-sidebar-content a.itemlist-footer-restore-gaia {
+    display: none;
+}
+.gaia-argoui-app-viewtoggle .gaia-argoui-select {
+    background-color: #f6f6f6;
+    border: 1px solid #d8d8d8;
+    color: gray;
+}
+.gaia-argoui-app-viewtoggle {
+    background-color: #f6f6f6;
+    border: 4px solid #f6f6f6;
+}
+.gaia-argoui-app-viewtoggle-reports .gaia-argoui-select-label {
+    background: initial;
+}
+.gaia-argoui-app-viewtoggle-views.gaia-argoui-app-viewtoggle-selected .gaia-argoui-select-label {
+    background: initial;
+}
+.gaia-argoui-app-viewtoggle-views .gaia-argoui-select-label {
+    background: initial;
+}
+
+/*詳細・編集画面　実行ボタン設置スペース*/
+.emc_exe_section{
+   display: inline-block;
+}
+/*詳細・編集画面　ヘッダーアイコン設置スペース*/
+.emc_icon_section {
+    position: relative;
+    display: inline-flex;
+    margin: 0px 15px 0px 15px;
+}
+.emc_icon_explan {
+    display: none;
+    top: 0;
+    padding: 3px;
+    background: ivory;
+    color: #666666;
+    font-size: 12px;
+    border: solid 1px #1a1a1a;
+    text-align: center;
+}
+.emc_icon{
+    margin: 0px 10px 0px 10px;
+}
+
+/*サブテーブル*/
+.subtable-label-gaia{
+    background-color: #d8d8d8;
+    border-color: #d8d8d8;
+    color: #333;
+}
+
+ /*処理の実行*/
+.emc_exe_main, .gaia-ui-actionmenu-save{
+    box-shadow: initial;
+    display: inline-block;
+    text-align: center;
+    width: 190px;
+    height: 30px;
+    box-sizing: border-box;
+    line-height: 30px;
+    margin: 5px 30px 5px 30px;
+    font-size: 14px;
+    color: #fff;
+    padding: 0px 5px;
+    border-radius: 4px;
+    background-color: #061283;
+    cursor: pointer;
+    border: solid 1px #061283;
+}
+.emc_exe_main:not(button){
+    line-height: 31px;
+}
+.emc_exe_main:hover, .gaia-ui-actionmenu-save:hover {
+    transition: 0.2s;
+    box-shadow: 0 5px 8px 0 #AAAAAA;
+    background-color: #061283;
+}
+.emc_exe_main:focus, .gaia-ui-actionmenu-save:focus {
+    background-color: #061283;
+}
+
+/*処理の実行＿注意*/
+.emc_exe_main_caut{
+    display: inline-block;
+    text-align: center;
+    width: 190px;
+    height: 30px;
+    box-sizing: border-box;
+    line-height: 30px;
+    margin: 5px;
+    font-size: 14px;
+    color: #fff;
+    padding: 0px 5px;
+    border-radius: 4px;
+    background-color: #FD3C3C;
+    cursor: pointer;
+    border: solid 1px #FD3C3C;
+}
+.emc_exe_main_caut:not(button){
+    line-height: 31px;
+}
+.emc_exe_main_caut:hover {
+    transition: 0.2s;
+    box-shadow: 0 5px 8px 0 #AAAAAA
+}
+/*処理の実行＿非アクティブ*/
+.emc_exe_main_disabled{
+    display: inline-block;
+    text-align: center;
+    width: 190px;
+    height: 30px;
+    box-sizing: border-box;
+    line-height: 30px;
+    margin: 5px;
+    font-size: 14px;
+    color: #fff;
+    padding: 0px 5px;
+    border-radius: 4px;
+    background-color: #D8D8D8;
+    cursor: default;
+    border: solid 1px #D8D8D8;
+}
+.emc_exe_main_disabled:not(button){
+    line-height: 31px;
+}
+
+ /*処理のキャンセル*/
+ .emc_cancel, .gaia-ui-actionmenu-cancel{
+    box-shadow: initial;
+    display: inline-block;
+    text-align: center;
+    width: 190px;
+    height: 30px;
+    box-sizing: border-box;
+    line-height: 28px;
+    margin: 5px;
+    border: 2px solid #3498db;
+    background-color: #f7f9fa;
+    color: #3498db;
+    font-size: 14px;
+    padding: 0px 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.emc_cancel:not(button){
+    line-height: 31px;
+}
+.emc_cancel:hover, .gaia-ui-actionmenu-cancel:hover {
+    transition: 0.2s;
+    box-shadow: 0 5px 8px 0 #AAAAAA;
+    background-color: #f7f9fa;
+}
+.emc_cancel:focus, .gaia-ui-actionmenu-cancel:focus {
+    background-color: #f7f9fa;
+}
+
+/*処理の実行（説明）*/
+.emc_exe_explan{
+    display: inline-block;
+    text-align: center;
+    width: 190px;
+    height: 30px;
+    box-sizing: border-box;
+    line-height: 30px;
+    margin: 5px;
+    font-size: 14px;
+    color: #061283;
+    padding: 0px 5px;
+    border-radius: 4px;
+    border: solid 2px #061283;
+    background-color: #fff;
+    cursor: pointer;
+}
+.emc_exe_explan:not(button){
+    line-height: 31px;
+}
+.emc_exe_explan:hover {
+    transition: 0.2s;
+    box-shadow: 0 5px 8px 0 #AAAAAA
+}
+/*RADIO*/
+div.emc_radio_exe_explan {
+    position:relative;
+    margin-right:8px;
+    font-size: 14px;
+    color: #061283;
+    border-radius: 4px;
+    background-color: #fff;
+
+    white-space: nowrap;
+    display: inline-block;
+}
+div.emc_radio_exe_explan input[type="radio"] {
+    top: 50%;
+    position: absolute;
+    transform: translateY(-50%);
+    display: none;
+}
+div.emc_radio_exe_explan input[type="radio"] + label{
+    top: 50%;
+    position: absolute;
+    transform: translateY(-50%);
+    padding-left: 32px;
+    position:relative;
+    margin-right: 5px;
+    color: #061283;
+    font-weight: 600;
+    cursor: pointer;
+}
+div.emc_radio_exe_explan input[type="radio"] + label:hover{
+    box-shadow: 0 5px 8px 0 #AAAAAA;
+}
+div.emc_radio_exe_explan input[type="radio"] + label::before{
+    top: 50%;
+    position: absolute;
+    transform: translateY(-50%);
+
+    content: "";
+    display: block;
+    left: 5px;
+    width: 19px;
+    height: 19px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 2px 2px 3px #eee inset, -2px -2px 3px #eee inset;
+}
+div.emc_radio_exe_explan input[type="radio"] + label:hover::before{
+    box-shadow: 0 5px 8px 0 #AAAAAA;
+}
+div.emc_radio_exe_explan input[type="radio"]:checked + label::after{
+    top: 50%;
+    position: absolute;
+    transform: translateY(-50%);
+
+    content: "";
+    display: block;
+    left: 9px;
+    width: 15px;
+    height: 15px;
+    background: #061283;
+    border-radius: 50%;
+}
+/*ボックス（囲い線有）*/
+div.emc_box_exe_explan {
+    margin-right:8px;
+    font-size: 14px;
+    color: #061283;
+    border-radius: 4px;
+    border: solid 2px #061283;
+    background-color: #fff;
+
+    white-space: nowrap;
+    display: inline-flex;
+    vertical-align: top;
+    cursor: default;
+}
+div.emc_box_exe_explan span {
+    padding: 11px 0 11px 11px;
+}
+/*ボックス（囲い線無）*/
+div.emc_nolinebox_exe_explan{
+    margin-right:8px;
+    font-size: 14px;
+    color: #061283;
+    background-color: #fff;
+
+    white-space: nowrap;
+    display: inline-flex;
+    cursor: default;
+}
+div.emc_nolinebox_exe_explan span {
+    padding: 11px 0 11px 11px;
+}
+
+/*実行（サブ１）*/
+.emc_exe_sub1{
+    display: inline-block;
+    text-align: center;
+    width: 190px;
+    height: 30px;
+    box-sizing: border-box;
+    line-height: 30px;
+    margin: 5px;
+    font-size: 14px;
+    color: #fff;
+    padding: 0px 5px;
+    border-radius: 4px;
+    background-color: #FFB74C;
+    cursor: pointer;
+    border: solid 1px #FFB74C;
+}
+.emc_exe_sub1:not(button){
+    line-height: 31px;
+}
+.emc_exe_sub1:hover {
+    transition: 0.2s;
+    box-shadow: 0 5px 8px 0 #AAAAAA
+}
+/*実行（サブ２）*/
+.emc_exe_sub2{
+    display: inline-block;
+    text-align: center;
+    width: 190px;
+    height: 30px;
+    box-sizing: border-box;
+    line-height: 30px;
+    margin: 5px;
+    font-size: 14px;
+    color: #fff;
+    padding: 0px 5px;
+    border-radius: 4px;
+    background-color: #138D90;
+    cursor: pointer;
+    border: solid 1px #138D90;
+}
+.emc_exe_sub2:not(button){
+    line-height: 31px;
+}
+.emc_exe_sub2:hover {
+    transition: 0.2s;
+    box-shadow: 0 5px 8px 0 #AAAAAA
+}
+
+/*実行以外＿非アクティブ*/
+.emc_exe_other{
+    display: inline-block;
+    text-align: center;
+    width: 190px;
+    height: 30px;
+    box-sizing: border-box;
+    line-height: 30px;
+    margin: 5px;
+    font-size: 14px;
+    color: #D8D8D8;
+    padding: 0px 5px;
+    border-radius: 4px;
+    border: solid 2px #D8D8D8;
+    background-color: #fff;
+    cursor: default;
+}
+.emc_exe_other:not(button){
+    line-height: 31px;
+}
+/*実行以外＿注意*/
+.emc_exe_other_caut{
+    display: inline-block;
+    text-align: center;
+    width: 190px;
+    height: 30px;
+    box-sizing: border-box;
+    line-height: 30px;
+    margin: 5px;
+    font-size: 14px;
+    color: #FD3C3C;
+    padding: 0px 5px;
+    border-radius: 4px;
+    border: solid 2px #FD3C3C;
+    background-color: #fff;
+    cursor: pointer;
+}
+.emc_exe_other_caut:not(button){
+    line-height: 31px;
+}
+.emc_exe_other_caut:hover {
+    transition: 0.2s;
+    box-shadow: 0 5px 8px 0 #AAAAAA
+}
+
+/*マイルストーン*/
+.emc_milestone_circle{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    border: solid 2px #061283;
+}
+.emc_milestone_circle:hover {
+    transition: 0.2s;
+    box-shadow: 0 5px 8px 0 #AAAAAA
+}
+/*マイルストーン＿注意*/
+.emc_milestone_circle_caut::before{
+    content: "！";
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #FD3C3C;
+    color: #fff;
+}
+/*マイルストーン＿非アクティブ*/
+.emc_milestone_circle_disabled{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #D8D8D8;
+}
+
+/*マイルストーン＿サブ*/
+.emc_milestone_square{
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: solid 2px #061283;
+}
+.emc_milestone_square:hover {
+    transition: 0.2s;
+    background: #061283;
+    box-shadow: 0 5px 8px 0 #AAAAAA
+}
+@charset "utf-8";
+
+ .show-public-or-private .gaia-argoui-space-spacelayout-cover {
+    background-image:none !important;
+    background-color:#ffffff;
+}
+ .container-gaia .gaia-argoui-app-titlebar-has-background {
+    background-image:none !important;
+    background-color:#ffffff;
+}
+ .body-top .gaia-argoui-app-titlebar {
+    background-image:none !important;
+    background-color:#ffffff;   
+}
+ .gaia-argoui-app-titlebar-content-wrapper {
+    background-image: url(https://emxas-em.cybozu.com/k/api/space/cover/download.do?spaceId=305&r=true&hash=E3FE0);
+    background-repeat:no-repeat;
+    background-position:left center;
+    background-size:auto 36px;
+    padding-left:50px;
+}
+ .gaia-argoui-space-spacelayout-title-wrapper {
+    background-image: url(https://emxas-em.cybozu.com/k/api/space/cover/download.do?spaceId=305&r=true&hash=E3FE0);
+    background-repeat:no-repeat;
+    background-position:left center;
+    background-size:auto 36px;
+    padding-left:50px;
+}
+
+ a.gaia-argoui-space-spacelayout-title {
+    color:#000000;
+    text-shadow: 0 0px 0px #ffffff !important;
+}
+ a.gaia-argoui-app-titlebar-content{
+    color:#000000 !important;
+    text-shadow: 0 0px 0px #ffffff !important;
+}
+ a.gaia-argoui-app-titlebar-content:hover{
+    color:#cccccc !important;
+}
+ a.gaia-argoui-space-spacelayout-title:hover {
+    color:#cccccc;
+}

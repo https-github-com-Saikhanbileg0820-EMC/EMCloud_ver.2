@@ -102,16 +102,20 @@ import { KintoneRestAPIClient } from '@kintone/rest-api-client';
             for(let coopRecord of COOP_FIELDS){
               
                 if(!record[coopRecord['EMCloudフィールドコード'].value]){
+                    if(employRecord===undefined)continue;
                   if(employRecord[coopRecord['EMCloudフィールドコード'].value] ){
                     employeePutBody[coopRecord['EMCloudフィールドコード'].value] = {value:employRecord[coopRecord['EMCloudフィールドコード'].value].value};
                 };
                   continue};
                 if(record[coopRecord['EMCloudフィールドコード'].value].value){
                     employeePutBody[coopRecord['EMCloudフィールドコード'].value] = {value:record[coopRecord['EMCloudフィールドコード'].value].value};
-                }else if(employRecord[coopRecord['EMCloudフィールドコード'].value] ){
+                }else {
+                    if(employRecord===undefined)continue;
+                    if(employRecord[coopRecord['EMCloudフィールドコード'].value] ){
                   if(record[coopRecord['EMCloudフィールドコード'].value].value===""||record[coopRecord['EMCloudフィールドコード'].value].value===null) continue;
                     employeePutBody[coopRecord['EMCloudフィールドコード'].value] = {value:employRecord[coopRecord['EMCloudフィールドコード'].value].value};
                 };
+             }
             }
             console.log(employeePutBody);
             return {

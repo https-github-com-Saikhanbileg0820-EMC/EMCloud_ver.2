@@ -16,6 +16,7 @@
             paymentDeduction: appIds.EMCpaymentDeduction, //?支給控除管理
             employment: appIds.EMCemployee, //?社員情報
             convertOBCItem: appIds.EMCconvertOBCItem, //?奉行項目コード変換DB
+            employManagement: appIds.EMCemployManagement, //雇用情報
         },
 
         //*ビュー情報
@@ -63,7 +64,6 @@
                 "メールアドレス1",
                 "氏名_フリガナ",
                 "氏名",
-                "実行日",
                 "雇用区分",
                 "性別",
                 "生年月日",

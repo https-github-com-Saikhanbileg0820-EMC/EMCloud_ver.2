@@ -159,7 +159,7 @@ import $ from 'jquery';
                   for(let Application in perApplication){
                     let postRecordArray = [];
                     for(let perApplicationRecord of perApplication[Application]){
-                      let employManagementRecords = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.employManagement,'orderBy':"$id desc", 'condition': `社員番号 = "${perApplicationRecord['社員番号'].value}"`} );
+                      let employManagementRecords = await CONFIG.GET_ALL_RECORDS({'app': CONFIG.APPID.employManagement,'orderBy':"実行日 desc, $id desc", 'condition': `社員番号 = "${perApplicationRecord['社員番号'].value}" and 実行日 <= "${selectDate}"`} );
                       let postRecordObj = {};
                       for(let perApplicationFields of applicationsFields[Application]){
                           if(!perApplicationRecord.hasOwnProperty(perApplicationFields)){
